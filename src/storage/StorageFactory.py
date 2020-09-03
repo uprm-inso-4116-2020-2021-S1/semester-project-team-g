@@ -11,7 +11,7 @@ class StorageFactory:
     def __init__(self, fileStorageStrategy: FileStorageStrategy):
         self.fileStorageStrategy = fileStorageStrategy
     
-    def createStrategy(self):
+    def generateStrategy(self):
         inDevelopment = os.getenv("IN_DEVELOPMENT")
         if inDevelopment:
             return self.fileStorageStrategy()
