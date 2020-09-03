@@ -1,0 +1,26 @@
+db = {
+    123-456-7890: {
+        currentlyPositive: False,
+        amountOfTimesInfected = 2,
+        datesReportedPostive  = ["2020-05-01", "2020-06-31"],
+        placeReportedPositive = ["Mayaguez, PR 00123", "San Juan, PR 00456"],
+    },
+}
+
+
+db[123-456-7890] -> Record de la persona
+
+getPersonData(SSN)
+getData(datatype, parametros={}):
+    id_d = {
+        1 : count global,
+        2 : count municipio,
+    }
+    if datatype == "globalCount":
+        iterates over every person and calculates amount of times infected
+    if datatype == "count in municipio":
+        calculate count only for parametros["municipio"]
+
+
+/getGlobalData -> getData(1, {})
+/getData?municpio="Mayaguez, PR 00123" -> getData(2, {municipio:"Mayaguez, PR 00123"})
