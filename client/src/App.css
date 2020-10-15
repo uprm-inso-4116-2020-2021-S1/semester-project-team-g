@@ -1,0 +1,7 @@
+body {
+    background: url("./images/medical.jpg");
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
