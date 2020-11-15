@@ -1,4 +1,4 @@
-import { SUBMIT_INFO, GET_INFO} from "../actions/types";
+import { SUBMIT_INFO, GET_INFO, INFO_LOADING} from "../actions/types";
 
 const initialState = {
     patientInfo: Object,
