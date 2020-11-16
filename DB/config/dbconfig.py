@@ -33,8 +33,9 @@ class DBManager:
             "insttype varchar(30));"
         )
         cursor.execute(
-            "CREATE TABLE Operator(oid serial primary key, ofirstname varchar(30), olastname varchar(30), "
-            "olevel varchar(30), instid integer references Institutions(instid));"
+            "CREATE TABLE Operator(oid serial primary key, ousername varchar(30), opassword varchar(100), " 
+            "ofirstname varchar(30), olastname varchar(30), olevel varchar(30), " 
+            "instid integer references Institutions(instid));"
         )
         cursor.execute(
             "CREATE TABLE Citizen(cid serial primary key, cfirstname varchar(30), clastname varchar(30), "
@@ -91,16 +92,16 @@ class DBManager:
         )
         # POPULATE OPERATOR TABLE
         cursor.execute(
-            "INSERT INTO operator(ofirstname, olastname, olevel, instid) "
-            "VALUES ('Ramon', 'Rosado', 'admin', 2);"
+            "INSERT INTO operator(ousername, opassword, ofirstname, olastname, olevel, instid) "
+            "VALUES ('ramoncin', '123abc', 'Ramon', 'Rosado', 'admin', 2);"
         )
         cursor.execute(
-            "INSERT INTO operator(ofirstname, olastname, olevel, instid) "
-            "VALUES ('Chris', 'something', 'admin', 1);"
+            "INSERT INTO operator(ousername, opassword, ofirstname, olastname, olevel, instid) "
+            "VALUES ('chr1s', '123pescaitoEs', 'Chris', 'something', 'admin', 1);"
         )
         cursor.execute(
-            "INSERT INTO operator(ofirstname, olastname, olevel, instid) "
-            "VALUES ('Mark', 'noC', 'admin', 3);"
+            "INSERT INTO operator(ousername, opassword, ofirstname, olastname, olevel, instid) "
+            "VALUES ('marko', 'polo', 'Mark', 'noC', 'admin', 3);"
         )
         # POPULATE CITIZEN TABLE
         cursor.execute(
