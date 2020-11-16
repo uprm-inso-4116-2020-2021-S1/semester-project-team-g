@@ -1,12 +1,17 @@
 from flask import request, make_response, render_template
 import requests
-from API.handler.CitizenHandler import CitizenHandler
+from cth.API.handler.CitizenHandler import CitizenHandler
+from cth import db
+from cth.models import Institution, Operator, Citizen, Test, Infected, Recovered, Illness
+
 '''
 Place routes here as basic python function.
 '''
 
 def get_global_results():
-    return CitizenHandler.get_global_results()
+    results = db.session.query(Institution).all()
+    for r in results:
+        return r.instname
 
 def get_results_by_municipality(municipality, illness):
     return CitizenHandler.get_results_by_municapility(municipality, illness)
