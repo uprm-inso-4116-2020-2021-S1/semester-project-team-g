@@ -6,6 +6,7 @@ from cth.models import Institution, Operator, Citizen, Test, Infected, Recovered
 from cth.DB.DAO import OperatorDAO
 from flask import jsonify
 import json
+import jwt
 
 '''
 Place routes here as basic python function.
@@ -27,7 +28,13 @@ def get_results_by_age(min_age, max_age, illness):
 
     return CitizenHandler.get_results_by_age(min_age, max_age, illness)
 
-def operator_login(data):
-    operator = json.load(data)
+def operator_login():
+    operator = request.json
     firstname = OperatorDAO.OperatorDAO.findOperator(operator["username"],operator["password"])
-    return jsonify(isOperator=True) if firstname!= None else jsonify(isOperator=False)
+    if firstname!= None:
+        token = jwt.encode({'username': operator['username'], 'password': operator['password'], 'exp': 31556926}, 'secret')
+        payload = {'token': 'Bearer ' + str(token) , 'success': True}
+        return payload
+    else:
+        payload = make_response(jsonify({"message": "User not found"}), 400)
+        return payload

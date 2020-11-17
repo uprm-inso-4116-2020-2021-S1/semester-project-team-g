@@ -28,7 +28,7 @@ app.add_url_rule('/results-sex/<sex>', view_func=cth_routes.get_results_by_sex, 
 
 #Run
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 3000))
+    port = int(os.environ.get("PORT", 5000))
     app.debug = False
     wsgi_app = app.wsgi_app
     http_server = WSGIServer(('', port), wsgi_app)

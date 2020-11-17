@@ -1,29 +1,28 @@
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
+import jwt from "jwt-decode";
 
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
 
 //Login
-export const loginUser = (userData) => (dispatch) => {
+export const loginUser = (userData, history) => (dispatch) => {
   axios
-    .post("/login", userData) //MUST CHANGE TO ACTUAL ENDPOINT ESTABLISHED IN BACKEND
+    .post("http://localhost:5000/operator-login", userData, { headers : {"Access-Control-Allow-Origin": "*"}}) //MUST CHANGE TO ACTUAL ENDPOINT ESTABLISHED IN BACKEND
     .then((res) => {
-      const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
+        const { token } = res.data;
+        localStorage.setItem("jwtToken", token);
 
-      setAuthToken(token);
+        setAuthToken(token);
 
-      const decoded = jwt_decode(token);
+        const decoded = jwt(token);
 
-      dispatch(setCurrentUser(decoded)); //Sending action to reducer
+        dispatch(setCurrentUser(decoded));
     })
-    .catch((err) =>
+    .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data,
-      })
-    );
+        payload: err.response.data
+      }));
 };
 
 //Set logged in user
