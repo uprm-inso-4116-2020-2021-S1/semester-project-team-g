@@ -3,11 +3,13 @@ import requests
 from cth.API.handler.CitizenHandler import CitizenHandler
 from cth import db
 from cth.models import Institution, Operator, Citizen, Test, Infected, Recovered, Illness
+from cth.DB.DAO import OperatorDAO
+from flask import jsonify
+import json
 
 '''
 Place routes here as basic python function.
 '''
-
 def get_global_results():
     results = db.session.query(Institution).all()
     for r in results:
@@ -24,3 +26,8 @@ def get_results_by_age(min_age, max_age, illness):
         return make_response("Max age cannot be less than the minimum age.", 400)
 
     return CitizenHandler.get_results_by_age(min_age, max_age, illness)
+
+def operator_login(data):
+    operator = json.load(data)
+    firstname = OperatorDAO.OperatorDAO.findOperator(operator["username"],operator["password"])
+    return jsonify(isOperator=True) if firstname!= None else jsonify(isOperator=False)

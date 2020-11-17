@@ -3,11 +3,15 @@ class CitizenDAO:
     
     #Missing connection to DB.
 
-    def add_data(patient):
+    def add_data(self,patient):
         #TODO 
+        return ''
 
-    def update_data(patient, information):
+    def update_data(self, patient, information):
         #TODO
+        return ''
 
-    def delete_data(patient):
+
+    def delete_data(self, patient):
         #TODO
+        return ''
