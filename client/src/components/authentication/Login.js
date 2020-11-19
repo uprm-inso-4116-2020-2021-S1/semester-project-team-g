@@ -7,14 +7,39 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import logo from "./logo-removebg-preview.png";
 
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { loginUser } from "../../actions/authAction";
+
 class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
+      username: "",
       password: "",
+      error: {}
     };
   }
+
+  componentDidMount() {
+    // If logged in and user navigates to Login page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/submission");
+    }
+  };
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/submission");
+    }
+
+    if (nextProps.error) {
+      this.setState({
+        error: nextProps.error,
+      });
+    }
+  };
 
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
@@ -22,11 +47,15 @@ class Login extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.history.push('/submission')
-    //Redirect to dashboard
+    const userData = {
+      username: this.state.username,
+      password: this.state.password
+    };
+    this.props.loginUser(userData, this.props.history);
   };
 
   render() {
+    const { error } = this.state;
     return (
       <Container style={{ width: "400px" }}>
         <Row className="text-center" style={{marginTop: "20px"}}>
@@ -44,15 +73,19 @@ class Login extends Component {
         >
           <Col style={{ padding: "20px" }}>
             <Form onSubmit={this.onSubmit}>
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
+              <Form.Group controlId="username">
+                <Form.Label>Username</Form.Label>
                 <Form.Control
                   required
                   onChange={this.onChange}
-                  value={this.state.email}
-                  type="email"
-                  placeholder="Enter Email"
+                  value={this.state.username}
+                  isInvalid={error.message}
+                  type="text"
+                  placeholder="Enter Username"
                 />
+                <Form.Control.Feedback type="invalid">
+                  {error.message}
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="password">
                 <Form.Label>Password</Form.Label>
@@ -75,4 +108,15 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  error: state.error
+});
+
+export default connect(mapStateToProps, { loginUser })(withRouter(Login));
