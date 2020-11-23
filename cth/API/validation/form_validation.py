@@ -101,8 +101,8 @@ class FormValidation:
         
         if "ishp" not in self.data: return "Error: ishp is not present on the json!"
         ishp = self.data["ishp"]
-        if ishp.lower() != "alive" and ishp.lower() != "deceased":
-            return "Error: ishp has to be 'alive' or 'deceased'!"
+        if ishp != True and ishp != False:
+            return "Error: ishp has to be True or False!"
     
     def validate_institution(self, data=None):
         if data:
@@ -128,8 +128,8 @@ class FormValidation:
         
         if "is_positive" not in self.data: return "Error: is_positive is not present on the json!"
         is_positive = self.data["is_positive"]
-        if is_positive.lower() != "positive" and is_positive.lower() != "negative":
-            return "Error: is_positive has to be 'positive' or 'negative'!"    
+        if is_positive != True and is_positive != False:
+            return "Error: is_positive has to be True or False!"
 
     
 
@@ -153,9 +153,9 @@ class FormValidation:
 #       "phone": "787-555-5555",
 #       "sex": "male",
 #       "ssn": "123-45-6789",
-#       "ishp": "alive",
+#       "ishp": True,
 #       "illness": "covid-19",
-#       "is_positive": "positive",
+#       "is_positive": False,
 #       "institution_name": "Hospital Mutuo",#institution_name
 #       "timestamp": "11/22/2020"
 #     }
