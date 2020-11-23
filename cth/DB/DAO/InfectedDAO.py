@@ -19,21 +19,16 @@ class InfectedDAO:
     def get_results_by_municipality(municipality, illness=None):
         ret = []
         if not illness:
-            result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
-
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(Citizen.caddress.like('%' + municipality + '%'))
             for r in result:
-
-                sub = {'municipality':r.caddress, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                sub = {'municipality':r.citizen.caddress, 'cid':r.infected.cid,'infcount':r.infected.infcount,'infcheckup':r.infected.infcheckup,'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-
 
         else:
-            result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(Citizen.caddress.like('%' + municipality + '%'), Infected.infname==illness)
             for r in result:
-
-                sub = {'municipality':r.caddress, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                sub = {'municipality':r.citizen.caddress, 'cid':r.infected.cid,'infcount':r.infected.infcount,'infcheckup':r.infected.infcheckup,'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-
         return jsonify(Infected = ret)
 
     def get_results_by_sex(sex, illness=None):

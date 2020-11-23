@@ -38,7 +38,8 @@ class CitizenHandler:
         if isPositive:
             cursor = CitizenDAO.CitizenDAO
             cid = cursor.add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp)
-            InfectedHandler.InfectedHandler.add_infected(cid,'1', '14' ,date,infname)
+            InfectedHandler.InfectedHandler.add_infected(cid, 1, '14', date, infname)
         else:
             cursor = CitizenDAO.CitizenDAO
             cursor.add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp)
+        return cid

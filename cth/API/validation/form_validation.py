@@ -129,7 +129,7 @@ class FormValidation:
         if "is_positive" not in self.data: return "Error: is_positive is not present on the json!"
         is_positive = self.data["is_positive"]
         if is_positive != True and is_positive != False :
-            return "Error: is_positive has to be 'positive' or 'negative'!"
+            return "Error: is_positive has to be 'True' or 'False'!"
 
 
 

@@ -9,13 +9,13 @@ class InfectedHandler:
 
         return results
 
-    def get_results_by_municapility(municipality, illness=None):
+    def get_results_by_municipality(municipality, illness=None):
         if not illness:
             cursor = InfectedDAO.InfectedDAO
             results = cursor.get_results_by_municipality(municipality)
         else:
             results = cursor.get_results_by_municipality(municipality, illness=illness)
-        return result
+        return results
 
     def get_results_by_sex(sex, illness=None):
         if not illness:
@@ -23,7 +23,7 @@ class InfectedHandler:
             results = cursor.get_results_by_sex(sex)
         else:
             results = cursor.get_results_by_sex(sex, illness=illness)
-        return result
+        return results
 
     def get_results_by_age(min_age, max_age, illness=None):
         if not illness:
@@ -31,7 +31,7 @@ class InfectedHandler:
             results = cursor.get_results_by_age(min_age,max_age)
         else:
             results = cursor.get_results_by_municipality(min_age,max_age, illness=illness)
-        return result
+        return results
 
     def add_infected(cid,count, checkup ,date,infname):
         cursor = InfectedDAO.InfectedDAO

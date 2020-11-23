@@ -74,6 +74,7 @@ class CitizenDAO:
         db.session.add(new_citizen)
         db.session.commit()
         return new_citizen.cid
+        
 
     def update_data(self, patient, information):
         #TODO

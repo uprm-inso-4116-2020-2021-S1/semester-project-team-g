@@ -1,8 +1,8 @@
 from flask import request, make_response, render_template
 import requests
-from cth.API.handler.CitizenHandler import CitizenHandler
-from cth.API.handler.InfectedHandler import InfectedHandler
-from cth.API.handler.TestHandler import TestHandler
+from cth.API.handler import CitizenHandler
+from cth.API.handler import InfectedHandler
+from cth.API.handler import TestHandler
 from cth import db
 from cth.models import Institution, Operator, Citizen, Test, Infected, Recovered, Illness
 from cth.DB.DAO import OperatorDAO
@@ -16,11 +16,11 @@ oid = 0
 Place routes here as basic python function.
 '''
 def get_global_results():
-    return InfectedHandler.get_global_results()
+    return InfectedHandler.InfectedHandler.get_global_results()
 
 
 def get_results_by_municipality(municipality, illness):
-    return InfectedHandler.get_results_by_municapility(municipality, illness)
+    return InfectedHandler.InfectedHandler.get_results_by_municipality(municipality,illness)
 
 def get_results_by_sex(sex, illness):
     return CitizenHandler.get_results_by_sex(sex, illness)
@@ -44,16 +44,13 @@ def operator_login():
         return payload
 
 def input_form():
-
     form = request.json
-    form = {'firstname':'Guillermo', 'lastname':'Betancourt', 'date_of_birth':'01/28/1998','sex':'M','phone':'787-459-3698','ssn':'123-45-6789','ishp': True,'is_positive':True,'timestamp':'11/22/2020','institution_name':'Perea','illness':'COVID-19','address':'Mayaguez 00680' }
     fv = FormValidation()
-
     result = fv.validate_all_functions(form)
 
     if len(result) == 0:
-        cid = CitizenHandler.add_citizen(form['firstname'],form['lastname'],form['date_of_birth'],form['sex'],form['address'],form['phone'],form['ssn'],form['ishp'],form['is_positive'],form['illness'],form['timestamp'])
-        tid = TestHandler.add_test(form['timestamp'], form['is_positive'], form['institution_name'], form['illness'],cid)
+        cid = CitizenHandler.CitizenHandler.add_citizen(form['firstname'],form['lastname'],form['date_of_birth'],form['sex'],form['address'],form['phone'],form['ssn'],form['ishp'],form['is_positive'],form['illness'],form['timestamp'])
+        tid = TestHandler.TestHandler.add_test(form['timestamp'], form['is_positive'], form['institution_name'], form['illness'],cid)
         return make_response("",200)
 
     else:
