@@ -22,7 +22,7 @@ class FormValidation:
         first_name = self.data["firstname"]
         if len(first_name) == 0 or first_name == "":
             return "Error: First name is empty"
-    
+
     def validate_last_name(self, data=None):
         if data:
             self.data = data
@@ -30,7 +30,7 @@ class FormValidation:
         last_name = self.data["lastname"]
         if len(last_name) == 0 or last_name == "":
             return "Error: Last name is empty"
-    
+
     def validate_date_of_birth(self, data=None):
         if data:
             self.data = data
@@ -40,7 +40,7 @@ class FormValidation:
             self.is_valid_date(date_of_birth)
         except Exception as e:
             return e
-        
+
         month, _, year = date_of_birth.split("/")
         if (int(month) > dt.today().month and int(year) == int(dt.today().year)) or int(year) > dt.today().year:
             return "Error: Date is not valid as it is in the future!"
@@ -51,16 +51,16 @@ class FormValidation:
             datetime.datetime.strptime(date_str, "%m/%d/%Y")
         except Exception as e:
             raise Exception("Error: " + str(e) + " | Verify that the date is valid!")
-    
-    
+
+
     def validate_sex(self, data=None):
         if data:
             self.data = data
         if "sex" not in self.data: return "Error: sex is not present on the json!"
         gender = self.data["sex"]
-        if gender.lower() != "male" and gender.lower() != "female":
-            return "Error: Sex must be 'male' or 'female'"
-    
+        if gender.lower() != "m" and gender.lower() != "f":
+            return "Error: Sex must be 'm' or 'f'"
+
     def validate_address(self, data=None):
         if data:
             self.data = data
@@ -72,38 +72,38 @@ class FormValidation:
             self.is_zipcode_present(address)
         except Exception as e:
             return str(e)
-        
+
     def is_zipcode_present(self, s):
         if not re.search(r"00\d{3}|0\d{4}", s):
             raise Exception("Zip code was not found!")
-            
+
     def validate_phone(self, data=None):
         if data:
             self.data = data
-        
+
         if "phone" not in self.data: return "Error: phone is not present on the json!"
         phone = self.data["phone"]
         if not re.match(r"\d{3}\-\d{3}\-\d{4}", phone):
             return "Error: Phone number invalid! Phone number format must follow this example: 787-123-4567"
-    
+
     def validate_ssn(self, data=None):
         if data:
             self.data = data
-        
+
         if "ssn" not in self.data: return "Error: ssn is not present on the json!"
         ssn = self.data["ssn"]
         if not re.match(r"\d{3}-\d{2}-\d{3}", ssn):
             return "Error: SSN format invalid! SSN format must follow this example: 123-45-6789"
-    
+
     def validate_ishp(self, data=None):
         if data:
             self.data = data
-        
+
         if "ishp" not in self.data: return "Error: ishp is not present on the json!"
         ishp = self.data["ishp"]
-        if ishp.lower() != "alive" and ishp.lower() != "deceased":
-            return "Error: ishp has to be 'alive' or 'deceased'!"
-    
+        if ishp != True and ishp != False:
+            return "Error: ishp has to be 'True' or 'False'!"
+
     def validate_institution(self, data=None):
         if data:
             self.data = data
@@ -112,26 +112,26 @@ class FormValidation:
         institution_name = self.data["institution_name"]
         if len(institution_name) == 0 or institution_name == "":
             return "Error: Institution name is empty"
-        
+
     def validate_illness(self, data=None):
         if data:
             self.data = data
-        
+
         if "illness" not in self.data: return "Error: illness is not present on the json!"
         illness = self.data["illness"]
         if len(illness) == 0 or illness == "":
             return "Error: Illness field is empty"
-    
+
     def validate_is_positive(self, data=None):
         if data:
             self.data = data
-        
+
         if "is_positive" not in self.data: return "Error: is_positive is not present on the json!"
         is_positive = self.data["is_positive"]
-        if is_positive.lower() != "positive" and is_positive.lower() != "negative":
-            return "Error: is_positive has to be 'positive' or 'negative'!"    
+        if is_positive != True and is_positive != False :
+            return "Error: is_positive has to be 'positive' or 'negative'!"
 
-    
+
 
 # fv = FormValidation()
 # print( fv.validate_date_of_birth({"date_of_birth":"12/1/2020"}) )

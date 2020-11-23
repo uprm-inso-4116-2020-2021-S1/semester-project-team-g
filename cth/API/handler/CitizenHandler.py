@@ -1,5 +1,5 @@
 from cth.DB.DAO import CitizenDAO
-from cth.API.handler import infectedHandler
+from cth.API.handler import InfectedHandler
 class CitizenHandler:
 
     def get_global_results():
@@ -35,10 +35,10 @@ class CitizenHandler:
         return result
 
     def add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp,isPositive,infname,date):
-        if True:
+        if isPositive:
             cursor = CitizenDAO.CitizenDAO
             cid = cursor.add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp)
-            InfectedHandler.add_infected(cid,'1', '14' ,date,infname)
+            InfectedHandler.InfectedHandler.add_infected(cid,'1', '14' ,date,infname)
         else:
             cursor = CitizenDAO.CitizenDAO
             cursor.add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp)

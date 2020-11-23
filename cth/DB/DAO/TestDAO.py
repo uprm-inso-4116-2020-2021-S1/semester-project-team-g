@@ -3,6 +3,6 @@ from cth.models import Test
 class TestDAO:
 
     def add_test( timestamp, is_positive, institution_name, illness, cid):
-        new_test = Tests(cid=cid, ttimestamp = count ,tillness = checkup , tispositive = date , institlocation = infname)
+        new_test = Test(cid=cid, ttimestamp = timestamp ,tillness = illness , tispositive = is_positive , instlocation = institution_name)
         db.session.add(new_test)
         db.session.commit()

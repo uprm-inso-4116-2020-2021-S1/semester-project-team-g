@@ -1,5 +1,6 @@
 from cth import db
 from cth.models import Citizen
+from cth.models import Infected
 class CitizenDAO:
 
     def get_global_results():
@@ -16,7 +17,7 @@ class CitizenDAO:
     def get_results_by_municipality(municipality, illness=None):
         ret = []
         if not illness:
-            result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.address)
+            result = db.session.query(Citizen).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
 
             for r in result:
 
@@ -25,7 +26,7 @@ class CitizenDAO:
 
 
         else:
-            result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.address)
+            result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
             for r in result:
 
                 sub = {'municipality':r.caddress, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
@@ -54,13 +55,13 @@ class CitizenDAO:
     def get_results_by_age(min_age, max_age, illness=None):
         ret = []
         if not illness:
-            result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.address)
+            result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
             for r in result:
 
                 sub = {'age':r.cDOB, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
                 ret.append(sub)
         else:
-            result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.address)
+            result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
             for r in result:
 
                 sub = {'age':r.cDOB, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
@@ -69,7 +70,7 @@ class CitizenDAO:
         return jsonify(Infected_by_age = ret)
 
     def add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp):
-        new_citizen = Citizen(cfirstname = firstname ,clastname = lastname, cDOB= DOB , csex = sex , caddress = address , cphone = phone , cssn = ssn , ishp = ishp )
+        new_citizen = Citizen(cfirstname = firstname ,clastname = lastname, cdob = DOB , cgender = sex , caddress = address , cphone = phone , cssn = ssn , ishp = ishp )
         db.session.add(new_citizen)
         db.session.commit()
         return new_citizen.cid
