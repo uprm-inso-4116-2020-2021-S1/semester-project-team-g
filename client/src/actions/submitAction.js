@@ -2,15 +2,15 @@ import axios from "axios";
 
 import { SUBMIT_INFO, GET_ERRORS, GET_INFO, INFO_LOADING } from "./types";
 
-export const submitInfo = (patientInfo) => (disptach) => {
+export const submitInfo = (patientInfo, history) => (disptach) => {
   axios
-    .post("/", patientInfo) //BACKEND ENDPOINT
+    .post("http://localhost:5000/input-form", patientInfo) //BACKEND ENDPOINT
     .then((res) => {
       disptach({
         type: SUBMIT_INFO,
         payload: res.data,
       });
-      //might push user to another page here.
+      history.push("/");
     })
     .catch((err) =>
       disptach({
