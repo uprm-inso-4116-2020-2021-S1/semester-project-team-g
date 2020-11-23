@@ -1,10 +1,12 @@
 from cth import db
-from cth.models import Citizen
 from cth.models import Infected
-class CitizenDAO:
+from cth.models import Citizen
+from flask import jsonify
+
+class InfectedDAO:
 
     def get_global_results():
-        result = db.session.query(Citizen).all()
+        result = db.session.query(Infected).all()
         ret = []
 
         for r in result:
@@ -17,21 +19,16 @@ class CitizenDAO:
     def get_results_by_municipality(municipality, illness=None):
         ret = []
         if not illness:
-            result = db.session.query(Citizen).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
-
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(Citizen.caddress.like('%' + municipality + '%'))
             for r in result:
-
-                sub = {'municipality':r.caddress, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                sub = {'municipality':r.citizen.caddress, 'cid':r.infected.cid,'infcount':r.infected.infcount,'infcheckup':r.infected.infcheckup,'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-
 
         else:
-            result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(Citizen.caddress.like('%' + municipality + '%'), Infected.infname==illness)
             for r in result:
-
-                sub = {'municipality':r.caddress, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                sub = {'municipality':r.citizen.caddress, 'cid':r.infected.cid,'infcount':r.infected.infcount,'infcheckup':r.infected.infcheckup,'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-
         return jsonify(Infected = ret)
 
     def get_results_by_sex(sex, illness=None):
@@ -69,12 +66,11 @@ class CitizenDAO:
 
         return jsonify(Infected_by_age = ret)
 
-    def add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp):
-        new_citizen = Citizen(cfirstname = firstname ,clastname = lastname, cdob = DOB , cgender = sex , caddress = address , cphone = phone , cssn = ssn , ishp = ishp )
-        db.session.add(new_citizen)
+    def add_infected(cid,count, checkup ,date,infname):
+        new_infected = Infected(cid=cid, infcount = count ,infcheckup = checkup , infdate = date , infname = infname)
+        db.session.add(new_infected)
         db.session.commit()
-        return new_citizen.cid
-        
+
 
     def update_data(self, patient, information):
         #TODO

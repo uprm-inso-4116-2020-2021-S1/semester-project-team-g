@@ -15,6 +15,8 @@ from cth.API.routes import cth_routes
 #Routes
 app.add_url_rule('/operator-login', view_func=cth_routes.operator_login, methods=['POST'])
 app.add_url_rule('/results-global', view_func=cth_routes.get_global_results, methods=['GET'])
+app.add_url_rule('/input-form', view_func=cth_routes.input_form, methods=['POST','GET'])
+
 
 app.add_url_rule('/results-age/<min_age>&<max_age>/<illness>', view_func=cth_routes.get_results_by_age, methods=['GET'])
 app.add_url_rule('/results-age/<min_age>&<max_age>', view_func=cth_routes.get_results_by_age, methods=['GET'], defaults={'illness': None})
@@ -29,7 +31,7 @@ app.add_url_rule('/results-sex/<sex>', view_func=cth_routes.get_results_by_sex, 
 #Run
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.debug = False
+    app.debug = True
     wsgi_app = app.wsgi_app
     http_server = WSGIServer(('', port), wsgi_app)
     http_server.serve_forever()
