@@ -33,7 +33,7 @@ def get_results_by_age(min_age, max_age, illness):
 
 def operator_login():
     operator = request.json
-    oid = operator['oid']
+    # oid = operator['oid']
     firstname = OperatorDAO.OperatorDAO.findOperator(operator["username"],operator["password"])
     if firstname!= None:
         token = jwt.encode({'username': operator['username'], 'password': operator['password'], 'exp': 31556926}, 'secret')

@@ -92,8 +92,8 @@ class FormValidation:
 
         if "ssn" not in self.data: return "Error: ssn is not present on the json!"
         ssn = self.data["ssn"]
-        if not re.match(r"\d{3}-\d{2}-\d{3}", ssn):
-            return "Error: SSN format invalid! SSN format must follow this example: 123-45-6789"
+        if not re.match("\d{9}", ssn):
+            return "Error: SSN format invalid! SSN format must follow this example: 123456789"
 
     def validate_ishp(self, data=None):
         if data:

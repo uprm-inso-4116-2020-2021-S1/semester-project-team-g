@@ -47,7 +47,7 @@ class Submit extends Component {
       address: this.state.address,
       date_of_birth: this.state.dateOfBirth,
       phone: this.state.phone,
-      sex: this.state.sex,
+      sex: this.state.sex === "male" ? "m" : "f",
       ssn: this.state.ssn,
       ishp: this.state.ishp === "alive" ? true : false,
       illness: this.state.illness,
@@ -59,7 +59,6 @@ class Submit extends Component {
   };
 
   render() {
-    console.log(this.state);
     let ssn = this.state.ssn;
     let content;
     let illnessData;
@@ -108,7 +107,7 @@ class Submit extends Component {
           </Form.Group>)
         locationData = (
           <Form.Group controlId="institution_name">
-            <Form.Label>Location</Form.Label>
+            <Form.Label>Institution Name</Form.Label>
             <Form.Control
               required
               onChange={this.onChange}
