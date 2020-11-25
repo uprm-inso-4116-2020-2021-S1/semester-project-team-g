@@ -39,17 +39,18 @@ class DBManager:
         )
         cursor.execute(
             "CREATE TABLE Citizen(cid serial primary key, cfirstname varchar(30), clastname varchar(30), "
-            "cDOB varchar(30), cgender varchar(30), caddress varchar(30), cphone varchar(30), cssn varchar(30), " 
-            "ishp varchar(30));"
+            "cDOB varchar(30), cgender varchar(30), caddress varchar(30), cphone varchar(30), " 
+            "cssn numeric(9, 0) unique, ishp boolean);"
         )
         cursor.execute(
             "CREATE TABLE Illness(iid serial primary key, iname varchar(30) unique, iinfectedcount integer, "
             "iirecoveredcount integer, iireinfectedcount integer, ideceasedcount integer);"
         )
         cursor.execute(
-            "CREATE TABLE Tests(tid serial primary key, ttimestamp varchar(30), "
-            "tillness varchar(30) references Illness(iname), tispositive varchar(30), instlocation varchar(30), "
-            "cid integer references Citizen(cid));"
+            "CREATE TABLE Tests(tid serial primary key, " 
+            "ttimestamp timestamp without time zone default (now() at time zone 'utc'), "
+            "tillness varchar(30) references Illness(iname), tispositive boolean, instname varchar(30), "
+            "cid integer references Citizen(cid), oid integer references Operator(oid));"
         )
         cursor.execute(
             "CREATE TABLE Infected(cid integer primary key references Citizen(cid), infcount integer, "
@@ -106,19 +107,19 @@ class DBManager:
         # POPULATE CITIZEN TABLE
         cursor.execute(
             "INSERT INTO citizen(cfirstname, clastname, cdob, cgender, caddress, cphone, cssn, ishp) "
-            "VALUES ('Juan', 'delPueblo', '1/1/2020', 'M', 'San German', '7871234567', '000000000', 'yes');"
+            "VALUES ('Juan', 'delPueblo', '1/1/2020', 'M', 'San German', '7871234567', '000000000', 'true');"
         )
         cursor.execute(
             "INSERT INTO citizen(cfirstname, clastname, cdob, cgender, caddress, cphone, cssn, ishp) "
-            "VALUES ('Soledad', 'nuncaEstaSola', '1/1/1996', 'F', 'Mayaguez', '7870000000', '111111111', 'yes');"
+            "VALUES ('Soledad', 'nuncaEstaSola', '1/1/1996', 'F', 'Mayaguez', '7870000000', '111111111', 'true');"
         )
         cursor.execute(
             "INSERT INTO citizen(cfirstname, clastname, cdob, cgender, caddress, cphone, cssn, ishp) "
-            "VALUES ('LaLlorona', 'deLajas', '6/6/2000', 'F', 'Lajas', '7876666666', '666666666', 'no');"
+            "VALUES ('LaLlorona', 'deLajas', '6/6/2000', 'F', 'Lajas', '7876666666', '666666666', 'false');"
         )
         cursor.execute(
             "INSERT INTO citizen(cfirstname, clastname, cdob, cgender, caddress, cphone, cssn, ishp) "
-            "VALUES ('Pedro', 'Romero', '3/6/2020', 'M', 'Ponce', '7871112233', '123456789', 'yes');"
+            "VALUES ('Pedro', 'Romero', '3/6/2020', 'M', 'Ponce', '7871112233', '123456789', 'true');"
         )
         # POPULATE ILLNESS TABLE
         cursor.execute(
@@ -127,16 +128,16 @@ class DBManager:
         )
         # POPULATE TESTS TABLE
         cursor.execute(
-            "INSERT INTO tests(ttimestamp, tillness, tispositive, instlocation, cid) "
-            "VALUES ('10/1/2020', 'COVID-19', 'True', 'Mayaguez', 1);"
+            "INSERT INTO tests(ttimestamp, tillness, tispositive, instname, cid, oid) "
+            "VALUES ('10/1/2020', 'COVID-19', 'true', 'Perea', 1, 1);"
         )
         cursor.execute(
-            "INSERT INTO tests(ttimestamp, tillness, tispositive, instlocation, cid) "
-            "VALUES ('11/11/2020', 'COVID-19', 'False', 'San German', 2);"
+            "INSERT INTO tests(ttimestamp, tillness, tispositive, instname, cid, oid) "
+            "VALUES ('11/11/2020', 'COVID-19', 'false', 'Concepción', 2, 1);"
         )
         cursor.execute(
-            "INSERT INTO tests(ttimestamp, tillness, tispositive, instlocation, cid) "
-            "VALUES ('8/8/2020', 'COVID-19', 'True', 'San German', 4);"
+            "INSERT INTO tests(tillness, tispositive, instname, cid, oid) "
+            "VALUES ('COVID-19', 'true', 'Lab Irrizarry', 4, 2);"
         )
         # POPULATE INFECTED TABLE
         cursor.execute(
@@ -152,8 +153,8 @@ class DBManager:
 
 if __name__ == '__main__':
     test = DBManager()
-    # test.drop_tables()
-    # test.create_tables()
-    test.truncate_tables()
+    test.drop_tables()
+    test.create_tables()
+    # test.truncate_tables()
     test.populate_db()
     test.connection.close()

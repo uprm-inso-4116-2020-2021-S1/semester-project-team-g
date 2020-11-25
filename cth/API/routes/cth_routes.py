@@ -10,7 +10,7 @@ from flask import jsonify
 import json
 import jwt
 from cth.API.validation.form_validation import FormValidation
-oid = 0
+
 
 '''
 Place routes here as basic python function.
@@ -31,28 +31,33 @@ def get_results_by_age(min_age, max_age, illness):
 
     return CitizenHandler.get_results_by_age(min_age, max_age, illness)
 
+
 def operator_login():
     operator = request.json
     # oid = operator['oid']
-    firstname = OperatorDAO.OperatorDAO.findOperator(operator["username"],operator["password"])
-    if firstname!= None:
+    firstname, oid = OperatorDAO.OperatorDAO.findOperator(operator["username"], operator["password"])
+    if firstname and oid:
         token = jwt.encode({'username': operator['username'], 'password': operator['password'], 'exp': 31556926}, 'secret')
-        payload = {'token': 'Bearer ' + str(token) , 'success': True}
+        payload = {'token': 'Bearer ' + str(token), 'success': True, 'oid': oid}
         return payload
     else:
         payload = make_response(jsonify({"message": "User not found"}), 400)
         return payload
 
+
 def input_form():
     form = request.json
     fv = FormValidation()
     result = fv.validate_all_functions(form)
-
     if len(result) == 0:
-        cid = CitizenHandler.CitizenHandler.add_citizen(form['firstname'],form['lastname'],form['date_of_birth'],form['sex'],form['address'],form['phone'],form['ssn'],form['ishp'],form['is_positive'],form['illness'],form['timestamp'])
-        tid = TestHandler.TestHandler.add_test(form['timestamp'], form['is_positive'], form['institution_name'], form['illness'],cid)
-        return make_response("",200)
-
+        cid = CitizenHandler.CitizenHandler.add_citizen(form['firstname'], form['lastname'], form['date_of_birth'],
+                                                        form['sex'], form['address'], form['phone'], form['ssn'],
+                                                        form['ishp'], form['is_positive'], form['illness'], form['oid']
+                                                        )
+        tid = TestHandler.TestHandler.add_test(form['illness'], form['is_positive'],
+                                               form['institution_name'], cid, form['oid']
+                                               )
+        return make_response("", 200)
     else:
-        payload = make_response(jsonify(error = result), 400)
+        payload = make_response(jsonify(error=result), 400)
         return payload
