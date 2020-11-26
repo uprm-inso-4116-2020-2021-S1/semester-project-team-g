@@ -12,10 +12,10 @@ from cth.API.routes import cth_routes
 #         print(r.instname)
 #     return ''
 
-#Routes
+# Routes
 app.add_url_rule('/operator-login', view_func=cth_routes.operator_login, methods=['POST'])
 app.add_url_rule('/results-global', view_func=cth_routes.get_global_results, methods=['GET'])
-app.add_url_rule('/input-form', view_func=cth_routes.input_form, methods=['POST','GET'])
+app.add_url_rule('/input-form', view_func=cth_routes.input_form, methods=['GET', 'POST'])
 
 
 app.add_url_rule('/results-age/<min_age>&<max_age>/<illness>', view_func=cth_routes.get_results_by_age, methods=['GET'])
@@ -28,7 +28,7 @@ app.add_url_rule('/results-sex/<sex>/<illness>', view_func=cth_routes.get_result
 app.add_url_rule('/results-sex/<sex>', view_func=cth_routes.get_results_by_sex, methods=['GET'], defaults={'illness': None})
 
 
-#Run
+# Run
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.debug = True

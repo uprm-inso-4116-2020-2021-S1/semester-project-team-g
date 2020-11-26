@@ -1,8 +1,11 @@
 from cth import db
 from cth.models import Test
+
+
 class TestDAO:
 
-    def add_test( timestamp, is_positive, institution_name, illness, cid):
-        new_test = Test(cid=cid, ttimestamp = timestamp ,tillness = illness , tispositive = is_positive , instlocation = institution_name)
+    @staticmethod
+    def add_test(tillness, tispositive, instname, cid, oid):
+        new_test = Test(tillness=tillness, tispositive=tispositive, instname=instname, cid=cid, oid=oid)
         db.session.add(new_test)
         db.session.commit()
