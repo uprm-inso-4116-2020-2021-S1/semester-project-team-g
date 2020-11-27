@@ -2,6 +2,7 @@ from cth import db
 from cth.models import Citizen
 from cth.models import Infected
 from flask import jsonify
+from datetime import datetime as dt
 
 class CitizenDAO:
 
@@ -41,13 +42,11 @@ class CitizenDAO:
         if not illness:
             result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(Citizen.cgender.like('%' + sex + '%'))
             for r in result:
-
                 sub = {'sex':r.citizen.cgender, 'cid':r.citizen.cid,'infcount':r.infected.infcount,'infcheckup':r.infected.infcheckup,'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
         else:
             result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.gender)
             for r in result:
-
                 sub = {'sex':r.cgender, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
                 ret.append(sub)
 
@@ -56,16 +55,16 @@ class CitizenDAO:
 
     def get_results_by_age(min_age, max_age, illness=None):
         ret = []
+        min_year = str(dt.now().year-int(max_age))
+        max_year = str(dt.now().year-int(min_age))
         if not illness:
-            result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(db.text("substring(Citizen.cdob from '%/%/#\"%#\"' for '#') >= \'" + min_year + "\'")).filter(db.text("substring(Citizen.cdob from '%/%/#\"%#\"' for '#') <= \'" + max_year + "\'"))
             for r in result:
-
-                sub = {'age':r.cDOB, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                sub = {'age':r.citizen.cdob, 'cid':r.citizen.cid, 'infcount':r.infected.infcount, 'infcheckup':r.infected.infcheckup, 'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
         else:
             result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
             for r in result:
-
                 sub = {'age':r.cDOB, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
                 ret.append(sub)
 

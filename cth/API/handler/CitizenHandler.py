@@ -32,7 +32,7 @@ class CitizenHandler:
             results = cursor.get_results_by_age(min_age,max_age)
         else:
             results = cursor.get_results_by_municipality(min_age,max_age,illness=illness)
-        return result
+        return results
 
     @staticmethod
     def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp, isPositive, infname):
