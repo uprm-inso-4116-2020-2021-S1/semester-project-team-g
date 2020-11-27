@@ -9,6 +9,7 @@ from cth.DB.DAO import OperatorDAO
 from flask import jsonify
 import json
 import jwt
+from datetime import datetime, timedelta
 from cth.API.validation.form_validation import FormValidation
 
 
@@ -37,7 +38,7 @@ def operator_login():
     # oid = operator['oid']
     firstname, oid = OperatorDAO.OperatorDAO.findOperator(operator["username"], operator["password"])
     if firstname and oid:
-        token = jwt.encode({'username': operator['username'], 'password': operator['password'], 'exp': 31556926}, 'secret')
+        token = jwt.encode({'username': operator['username'], 'password': operator['password'], 'exp': datetime.utcnow() + timedelta(minutes=60)}, 'secret')
         payload = {'token': 'Bearer ' + str(token), 'success': True, 'oid': oid}
         return payload
     else:
