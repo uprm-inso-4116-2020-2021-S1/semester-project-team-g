@@ -69,13 +69,14 @@ class CitizenDAO:
 
         return jsonify(Infected_by_age = ret)
 
-    def add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp):
-        new_citizen = Citizen(cfirstname = firstname ,clastname = lastname, cdob = DOB , cgender = sex , caddress = address , cphone = phone , cssn = ssn , ishp = ishp )
+    @staticmethod
+    def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp):
+        new_citizen = Citizen(cfirstname=firstname, clastname=lastname, cdob=DOB, cgender=sex, caddress=address,
+                              cphone=phone, cssn=ssn, ishp=ishp)
         db.session.add(new_citizen)
         db.session.commit()
         return new_citizen.cid
         
-
     def update_data(self, patient, information):
         #TODO
         return ''

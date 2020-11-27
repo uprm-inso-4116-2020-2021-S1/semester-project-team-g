@@ -52,7 +52,7 @@ def input_form():
     if len(result) == 0:
         cid = CitizenHandler.CitizenHandler.add_citizen(form['firstname'], form['lastname'], form['date_of_birth'],
                                                         form['sex'], form['address'], form['phone'], form['ssn'],
-                                                        form['ishp'], form['is_positive'], form['illness'], form['oid']
+                                                        form['ishp'], form['is_positive'], form['illness']
                                                         )
         tid = TestHandler.TestHandler.add_test(form['illness'], form['is_positive'],
                                                form['institution_name'], cid, form['oid']

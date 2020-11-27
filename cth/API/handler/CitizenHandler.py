@@ -34,12 +34,9 @@ class CitizenHandler:
             results = cursor.get_results_by_municipality(min_age,max_age,illness=illness)
         return result
 
-    def add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp,isPositive,infname,date):
+    @staticmethod
+    def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp, isPositive, infname):
+        cid = CitizenDAO.CitizenDAO.add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp)
         if isPositive:
-            cursor = CitizenDAO.CitizenDAO
-            cid = cursor.add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp)
-            InfectedHandler.InfectedHandler.add_infected(cid, 1, '14', date, infname)
-        else:
-            cursor = CitizenDAO.CitizenDAO
-            cursor.add_citizen(firstname,lastname,DOB,sex,address,phone,ssn,ishp)
+            InfectedHandler.InfectedHandler.add_infected(cid, 1, '14', infname)
         return cid

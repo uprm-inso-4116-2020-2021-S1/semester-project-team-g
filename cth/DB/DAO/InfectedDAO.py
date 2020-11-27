@@ -66,8 +66,9 @@ class InfectedDAO:
 
         return jsonify(Infected_by_age = ret)
 
-    def add_infected(cid,count, checkup ,date,infname):
-        new_infected = Infected(cid=cid, infcount = count ,infcheckup = checkup , infdate = date , infname = infname)
+    @staticmethod
+    def add_infected(cid, count, checkup, infname):
+        new_infected = Infected(cid=cid, infcount=count, infcheckup=checkup, infname=infname)
         db.session.add(new_infected)
         db.session.commit()
 

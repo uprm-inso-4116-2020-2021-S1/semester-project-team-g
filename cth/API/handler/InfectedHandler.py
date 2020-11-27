@@ -33,6 +33,6 @@ class InfectedHandler:
             results = cursor.get_results_by_municipality(min_age,max_age, illness=illness)
         return results
 
-    def add_infected(cid,count, checkup ,date,infname):
-        cursor = InfectedDAO.InfectedDAO
-        cursor.add_infected(cid,count, checkup ,date,infname)
+    @staticmethod
+    def add_infected(cid, count, checkup, infname):
+        InfectedDAO.InfectedDAO.add_infected(cid, count, checkup, infname)
