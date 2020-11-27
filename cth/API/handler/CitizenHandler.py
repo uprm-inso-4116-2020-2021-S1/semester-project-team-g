@@ -24,7 +24,7 @@ class CitizenHandler:
             results = cursor.get_results_by_sex(sex)
         else:
             results = cursor.get_results_by_sex(sex, illness=illness)
-        return result
+        return results
 
     def get_results_by_age(min_age, max_age, illness=None):
         if not illness:

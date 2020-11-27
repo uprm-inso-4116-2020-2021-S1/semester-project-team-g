@@ -1,9 +1,11 @@
 from cth import db
 from cth.models import Citizen
 from cth.models import Infected
+from flask import jsonify
+
 class CitizenDAO:
 
-    def get_global_results():
+    def get_global_results(self):
         result = db.session.query(Citizen).all()
         ret = []
 
@@ -37,10 +39,10 @@ class CitizenDAO:
     def get_results_by_sex(sex, illness=None):
         ret = []
         if not illness:
-            result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.gender)
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(Citizen.cgender.like('%' + sex + '%'))
             for r in result:
 
-                sub = {'sex':r.cgender, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                sub = {'sex':r.citizen.cgender, 'cid':r.citizen.cid,'infcount':r.infected.infcount,'infcheckup':r.infected.infcheckup,'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
         else:
             result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.gender)
