@@ -57,7 +57,7 @@ def input_form():
         tid = TestHandler.TestHandler.add_test(form['illness'], form['is_positive'],
                                                form['institution_name'], cid, form['oid']
                                                )
-        return make_response("", 200)
+        return make_response(jsonify({"message": "Submission was successful"}), 200)
     else:
-        payload = make_response(jsonify(error=result), 400)
+        payload = make_response(jsonify(result), 400)
         return payload

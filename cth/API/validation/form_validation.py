@@ -39,7 +39,7 @@ class FormValidation:
         try:
             self.is_valid_date(date_of_birth)
         except Exception as e:
-            return e
+            return str(e)
 
         month, _, year = date_of_birth.split("/")
         if (int(month) > dt.today().month and int(year) == int(dt.today().year)) or int(year) > dt.today().year:
@@ -149,7 +149,7 @@ class FormValidation:
 #       "firstname": "Jose",
 #       "lastname": "Biescas",
 #       "address": "Calle Manuel 00123",
-#       "date_of_birth": "10/1/1999",
+#       "date_of_birth": "100/1/1999",
 #       "phone": "787-555-5555",
 #       "sex": "male",
 #       "ssn": "123-45-6789",
@@ -159,4 +159,6 @@ class FormValidation:
 #       "institution_name": "Hospital Mutuo",#institution_name
 #       "timestamp": "11/22/2020"
 #     }
-# print( FormValidation().validate_all_functions(patientData) )
+# result = ( FormValidation().validate_all_functions(patientData) )
+# print(result)
+# print(jsonify(result))
