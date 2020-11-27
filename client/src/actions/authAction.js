@@ -10,11 +10,14 @@ export const loginUser = (userData, history) => (dispatch) => {
     .post("http://localhost:5000/operator-login", userData, { headers : {"Access-Control-Allow-Origin": "*"}}) //MUST CHANGE TO ACTUAL ENDPOINT ESTABLISHED IN BACKEND
     .then((res) => {
         const { token } = res.data;
+        const { oid } = res.data;
         localStorage.setItem("jwtToken", token);
-
+        localStorage.setItem("oid", oid);
+        
         setAuthToken(token);
 
         const decoded = jwt(token);
+        decoded.oid = oid;
 
         dispatch(setCurrentUser(decoded));
     })

@@ -1,0 +1,40 @@
+.content {
+    display: flex;
+    flex-direction: row;
+}
+.form.container {
+    width: 400px;
+    height: fit-content;
+    display: flex;
+}
+
+.form.row {
+    justify-content: center;
+    margin-top: 40px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.form.col {
+    padding: 20px;
+}
+
+.side-panel-container {
+    display: flex;
+    justify-content: flex-end;
+    height: 80vh;
+    margin-top: 50px;
+}
+
+.side-panel {
+    border-radius: 10px;
+    background-color: white;
+    width: 200px;
+}
+
+.side-panel-title h4 {
+    display: flex;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: #b3e5fc;
+}

@@ -17,14 +17,16 @@ import jwtDecode from "jwt-decode";
 
 if (localStorage.jwtToken) {
   const token = localStorage.jwtToken;
+  const oid = localStorage.oid;
   setAuthToken(token);
 
   const decoded = jwtDecode(token);
+  decoded.oid = oid;
 
   store.dispatch(setCurrentUser(decoded));
 
-  const currentTime = Date.now() / 100000;
-  if (decoded.exp < currentTime) {
+  const currentTime = Date.now();
+  if (currentTime >= decoded.exp * 1000) {
     console.log(currentTime);
     console.log(decoded.exp);
     store.dispatch(logoutUser());
