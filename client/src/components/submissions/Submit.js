@@ -6,6 +6,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { connect } from "react-redux";
 import { submitInfo } from "../../actions/submitAction";
+import PropTypes from "prop-types";
+
+import "./Submit.css";
 
 class Submit extends Component {
   constructor() {
@@ -24,10 +27,32 @@ class Submit extends Component {
       illness: "",
       is_positive: "negative",
       institution_name: "",
-      timestamp: "",
-      error: {}
+
+      //For side panel
+      error: {},
+      status: []
     };
+    this.initialState = this.state;
+    delete this.initialState['error'];
   }
+
+  resetState() {
+    this.setState(this.initialState);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState){
+    if(nextProps.error!==prevState.error){
+      return { error: nextProps.error};
+   }
+   else return null;
+ }
+ 
+ componentDidUpdate(prevProps, prevState) {
+   if(prevProps.error!==this.props.error){
+     //Perform some operation here
+     this.setState({error: prevProps.error});
+   }
+ }
 
   componentDidMount() {
     if (!this.props.auth.isAuthenticated) {
@@ -53,9 +78,10 @@ class Submit extends Component {
       illness: this.state.illness,
       is_positive: this.state.is_positive === "positive" ? true : false,
       institution_name: this.state.institution_name,
-      timestamp: this.state.timestamp
-    }
+      oid: this.props.auth.user.oid
+    };
     this.props.submitInfo(patientData, this.props.history);
+    this.resetState();
   };
 
   render() {
@@ -64,13 +90,13 @@ class Submit extends Component {
     let illnessData;
     let ispositiveData;
     let locationData;
-    let timestampData;
+    let sidePanel;
     const { error } = this.state;
     if (Number(ssn.length) === 9 && Number.isFinite(parseInt(ssn))) {
       //When we get a ssn number
       //We'll check if it exists or not.
       //If it does we'll autofill the entries
-      if(this.state.ishp === "alive") {
+      if (this.state.ishp === "alive") {
         illnessData = (
           <Form.Group controlId="illness">
             <Form.Label>Illness</Form.Label>
@@ -85,9 +111,10 @@ class Submit extends Component {
             <Form.Control.Feedback type="invalid">
               {error.illness}
             </Form.Control.Feedback>
-          </Form.Group>)
-        ispositiveData= ( 
-         <Form.Group controlId="is_positive">
+          </Form.Group>
+        );
+        ispositiveData = (
+          <Form.Group controlId="is_positive">
             <Form.Label>Illness Status</Form.Label>
             <Form.Control
               required
@@ -104,7 +131,8 @@ class Submit extends Component {
             <Form.Control.Feedback type="invalid">
               {error.is_positive}
             </Form.Control.Feedback>
-          </Form.Group>)
+          </Form.Group>
+        );
         locationData = (
           <Form.Group controlId="institution_name">
             <Form.Label>Institution Name</Form.Label>
@@ -119,34 +147,17 @@ class Submit extends Component {
             <Form.Control.Feedback type="invalid">
               {error.institution}
             </Form.Control.Feedback>
-          </Form.Group>)
-        timestampData = (
-            <Form.Group controlId="timestamp">
-              <Form.Label>Timestamp</Form.Label>
-              <Form.Control
-                required
-                onChange={this.onChange}
-                value={this.state.timestamp}
-                type="text"
-                placeholder="Enter Date"
-              />
-            </Form.Group>)
+          </Form.Group>
+        );
       }
       content = (
-        <Container style={{ width: "400px" }}>
-          <Row
-            className="form justify-content-center"
-            style={{
-              marginTop: "40px",
-              backgroundColor: "white",
-              borderRadius: "5px",
-            }}
-          >
+        <Container className="form">
+          <Row className="form">
             <div style={{ paddingTop: "20px" }}>
               <b>Please provide the patient's information</b>
             </div>
-            <Col style={{ padding: "20px" }}>
-              <Form onSubmit={this.onSubmit}>
+            <Col className="form">
+              <Form ref="form" onSubmit={this.onSubmit}>
                 <Form.Group controlId="firstname">
                   <Form.Label>Firstname</Form.Label>
                   <Form.Control
@@ -168,8 +179,12 @@ class Submit extends Component {
                     onChange={this.onChange}
                     value={this.state.lastname}
                     type="text"
+                    isInvalid={error.last_name}
                     placeholder="Enter Lastname"
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {error.last_name}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="address">
                   <Form.Label>Address</Form.Label>
@@ -178,11 +193,11 @@ class Submit extends Component {
                     onChange={this.onChange}
                     value={this.state.address}
                     type="text"
-                    isInvalid={error.last_name}
+                    isInvalid={error.address}
                     placeholder="Enter Address"
                   />
                   <Form.Control.Feedback type="invalid">
-                    {error.last_name}
+                    {error.address}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="dateOfBirth">
@@ -266,7 +281,6 @@ class Submit extends Component {
                 {illnessData}
                 {ispositiveData}
                 {locationData}
-                {timestampData}
                 <Button variant="primary" type="submit" block>
                   Submit
                 </Button>
@@ -277,19 +291,12 @@ class Submit extends Component {
       );
     } else {
       content = (
-        <Container style={{ width: "400px" }}>
-          <Row
-            className="form justify-content-center"
-            style={{
-              marginTop: "40px",
-              backgroundColor: "white",
-              borderRadius: "5px",
-            }}
-          >
+        <Container className="form">
+          <Row className="form">
             <div style={{ paddingTop: "20px" }}>
               <b>Please provide the patient's information</b>
             </div>
-            <Col style={{ padding: "20px" }}>
+            <Col className="form">
               <Form onSubmit={this.onSubmit}>
                 <Form.Group controlId="ssn">
                   <Form.Label>SSN</Form.Label>
@@ -311,18 +318,44 @@ class Submit extends Component {
         </Container>
       );
     }
-
-    return (<div>
-          {content}
+    let statusMap;
+    statusMap = this.props.submit.patientInfo.map((stat) => (
+      <div className="side-panel-entry" key={stat.message} >
+        <a>{stat.message}</a>
+      </div>
+    ))
+    sidePanel = (
+      <div className="side-panel-container">
+        <div className="side-panel">
+          <div className="side-panel-title">
+            <h4>Status Panel</h4>
           </div>
-    )
+          <div className="side-panel-content">
+            {statusMap}
+          </div>
+        </div>
+      </div>
+    );
+
+    return (
+      <div className="content">
+        {content}
+        {sidePanel}
+      </div>
+    );
   }
 }
 
-const mapStateToProps = state => ({
+Submit.propTypes = {
+  submitInfo: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  error: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
   auth: state.auth,
   error: state.error,
-  submit: state.submit
-})
+  submit: state.submit,
+});
 
 export default connect(mapStateToProps, { submitInfo })(Submit);

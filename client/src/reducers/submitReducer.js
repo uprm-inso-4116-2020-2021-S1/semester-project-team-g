@@ -1,7 +1,7 @@
 import { SUBMIT_INFO, GET_INFO, INFO_LOADING} from "../actions/types";
 
 const initialState = {
-    patientInfo: Object,
+    patientInfo: [],
     patientLoading: false
 };
 
@@ -10,7 +10,7 @@ export default function(state = initialState, action) {
         case SUBMIT_INFO:
             return {
                 ...state,
-                patientInfo: action.payload
+                patientInfo: [action.payload, ...state.patientInfo]
             };
         case GET_INFO:
             return {

@@ -10,7 +10,7 @@ export const submitInfo = (patientInfo, history) => (disptach) => {
         type: SUBMIT_INFO,
         payload: res.data,
       });
-      history.push("/");
+      return res.data;
     })
     .catch((err) =>
       disptach({
