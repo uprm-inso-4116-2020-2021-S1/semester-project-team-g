@@ -54,7 +54,8 @@ class DBManager:
         )
         cursor.execute(
             "CREATE TABLE Infected(cid integer primary key references Citizen(cid), infcount integer, "
-            "infcheckup varchar(30), infdate varchar(30), infname varchar(30) references Illness(iname));"
+            "infcheckup varchar(30), infdate timestamp without time zone default (now() at time zone 'utc'), " 
+            "infname varchar(30) references Illness(iname));"
         )
         cursor.execute(
             "CREATE TABLE Recovered(cid integer primary key references Citizen(cid), rdate varchar(30), "
@@ -141,8 +142,8 @@ class DBManager:
         )
         # POPULATE INFECTED TABLE
         cursor.execute(
-            "INSERT INTO Infected(cid, infcount, infcheckup, infdate, infname) " 
-            "VALUES (1, 1, '11/12/2020', '10/1/2020', 'COVID-19');"
+            "INSERT INTO Infected(cid, infcount, infcheckup, infname) " 
+            "VALUES (1, 1, '11/12/2020', 'COVID-19');"
         )
         cursor.execute(
             "INSERT INTO Infected(cid, infcount, infcheckup, infdate, infname) "
