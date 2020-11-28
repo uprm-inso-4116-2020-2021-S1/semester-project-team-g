@@ -24,13 +24,19 @@ def get_results_by_municipality(municipality, illness):
     return InfectedHandler.InfectedHandler.get_results_by_municipality(municipality,illness)
 
 def get_results_by_sex(sex, illness):
-    return CitizenHandler.get_results_by_sex(sex, illness)
+    return CitizenHandler.CitizenHandler.get_results_by_sex(sex, illness)
 
 def get_results_by_age(min_age, max_age, illness):
     if max_age < min_age:
         return make_response("Max age cannot be less than the minimum age.", 400)
 
-    return CitizenHandler.get_results_by_age(min_age, max_age, illness)
+    return CitizenHandler.CitizenHandler.get_results_by_age(min_age, max_age, illness)
+
+def get_results_by_month(month, illness):
+    return CitizenHandler.CitizenHandler.get_results_by_month(month, illness)
+
+def get_results_by_year(year, illness):
+    return CitizenHandler.CitizenHandler.get_results_by_year(year, illness)
 
 
 def operator_login():

@@ -24,7 +24,7 @@ class CitizenHandler:
             results = cursor.get_results_by_sex(sex)
         else:
             results = cursor.get_results_by_sex(sex, illness=illness)
-        return result
+        return results
 
     def get_results_by_age(min_age, max_age, illness=None):
         if not illness:
@@ -32,7 +32,23 @@ class CitizenHandler:
             results = cursor.get_results_by_age(min_age,max_age)
         else:
             results = cursor.get_results_by_municipality(min_age,max_age,illness=illness)
-        return result
+        return results
+
+    def get_results_by_month(month, illness=None):
+        if not illness:
+            cursor = CitizenDAO.CitizenDAO
+            results = cursor.get_results_by_month(month)
+        else:
+            results = cursor.get_results_by_month(month,illness=illness)
+        return results
+
+    def get_results_by_year(year, illness=None):
+        if not illness:
+            cursor = CitizenDAO.CitizenDAO
+            results = cursor.get_results_by_year(year)
+        else:
+            results = cursor.get_results_by_year(year,illness=illness)
+        return results
 
     @staticmethod
     def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp, isPositive, infname):

@@ -34,10 +34,10 @@ class InfectedDAO:
     def get_results_by_sex(sex, illness=None):
         ret = []
         if not illness:
-            result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.gender)
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(Citizen.cgender.like('%' + sex + '%'))
             for r in result:
 
-                sub = {'sex':r.cgender, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                sub = {'sex':r.cgender, 'cid':r.cid, 'infcount':r.infcount, 'infcheckup':r.infcheckup, 'infdate':r.infdate, 'infname':r.infname}
                 ret.append(sub)
         else:
             result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.gender)
@@ -50,6 +50,23 @@ class InfectedDAO:
         return jsonify(Infected_by_sex = ret)
 
     def get_results_by_age(min_age, max_age, illness=None):
+        ret = []
+        if not illness:
+            result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
+            for r in result:
+
+                sub = {'age':r.cDOB, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                ret.append(sub)
+        else:
+            result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
+            for r in result:
+
+                sub = {'age':r.cDOB, 'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                ret.append(sub)
+
+        return jsonify(Infected_by_age = ret)
+
+    def get_results_by_month(month, illness=None):
         ret = []
         if not illness:
             result = db.session.query(Infected).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
