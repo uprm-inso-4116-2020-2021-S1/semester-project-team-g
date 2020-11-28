@@ -42,6 +42,14 @@ class CitizenHandler:
             results = cursor.get_results_by_month(month,illness=illness)
         return results
 
+    def get_results_by_year(year, illness=None):
+        if not illness:
+            cursor = CitizenDAO.CitizenDAO
+            results = cursor.get_results_by_year(year)
+        else:
+            results = cursor.get_results_by_year(year,illness=illness)
+        return results
+
     @staticmethod
     def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp, isPositive, infname):
         cid = CitizenDAO.CitizenDAO.add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp)

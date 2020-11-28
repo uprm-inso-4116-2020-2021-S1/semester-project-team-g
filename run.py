@@ -30,6 +30,8 @@ app.add_url_rule('/results-sex/<sex>', view_func=cth_routes.get_results_by_sex, 
 app.add_url_rule('/results-month/<month>/<illness>', view_func=cth_routes.get_results_by_month, methods=['GET'])
 app.add_url_rule('/results-month/<month>', view_func=cth_routes.get_results_by_month, methods=['GET'], defaults={'illness': None})
 
+app.add_url_rule('/results-year/<year>/<illness>', view_func=cth_routes.get_results_by_year, methods=['GET'])
+app.add_url_rule('/results-year/<year>', view_func=cth_routes.get_results_by_year, methods=['GET'], defaults={'illness': None})
 
 # Run
 if __name__ == '__main__':

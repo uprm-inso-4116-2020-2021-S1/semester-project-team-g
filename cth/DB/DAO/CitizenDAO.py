@@ -77,6 +77,20 @@ class CitizenDAO:
                 ret.append(sub)
         return jsonify(Citizen_by_month = ret)
 
+    def get_results_by_year(year, illness=None):
+        ret = []
+        if not illness:
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(db.extract('year', Infected.infdate) == int(year))
+            for r in result:
+                sub = {'cid':r.citizen.cid, 'infcount':r.infected.infcount, 'infcheckup':r.infected.infcheckup, 'infdate':r.infected.infdate, 'infname':r.infected.infname}
+                ret.append(sub)
+        else:
+            result = db.session.query(Infected).filter(Infected.infname == illness).join(Citizen, Infected.cid == Citizen.cid).group_by(Citizen.caddress)
+            for r in result:
+                sub = {'cid':r.cid,'infcount':r.infcount,'infcheckup':r.infcheckup,'infdate':r.infdate, 'infname':r.infname}
+                ret.append(sub)
+        return jsonify(Citizen_by_month = ret)
+
     @staticmethod
     def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp):
         new_citizen = Citizen(cfirstname=firstname, clastname=lastname, cdob=DOB, cgender=sex, caddress=address,

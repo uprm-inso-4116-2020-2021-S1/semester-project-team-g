@@ -35,6 +35,9 @@ def get_results_by_age(min_age, max_age, illness):
 def get_results_by_month(month, illness):
     return CitizenHandler.CitizenHandler.get_results_by_month(month, illness)
 
+def get_results_by_year(year, illness):
+    return CitizenHandler.CitizenHandler.get_results_by_year(year, illness)
+
 
 def operator_login():
     operator = request.json
