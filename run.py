@@ -27,6 +27,9 @@ app.add_url_rule('/results-municipality/<municipality>', view_func=cth_routes.ge
 app.add_url_rule('/results-sex/<sex>/<illness>', view_func=cth_routes.get_results_by_sex, methods=['GET'])
 app.add_url_rule('/results-sex/<sex>', view_func=cth_routes.get_results_by_sex, methods=['GET'], defaults={'illness': None})
 
+app.add_url_rule('/results-month/<month>/<illness>', view_func=cth_routes.get_results_by_month, methods=['GET'])
+app.add_url_rule('/results-month/<month>', view_func=cth_routes.get_results_by_month, methods=['GET'], defaults={'illness': None})
+
 
 # Run
 if __name__ == '__main__':
