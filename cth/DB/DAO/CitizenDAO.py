@@ -3,6 +3,8 @@ from cth.models import Citizen
 from cth.models import Infected
 from flask import jsonify
 from datetime import datetime as dt
+from dateutil.relativedelta import relativedelta
+import datetime
 
 class CitizenDAO:
 
@@ -55,10 +57,10 @@ class CitizenDAO:
 
     def get_results_by_age(min_age, max_age, illness=None):
         ret = []
-        min_year = str(dt.now().year-int(max_age))
-        max_year = str(dt.now().year-int(min_age))
+        min_year = str(dt.now() - datetime.timedelta(days=int(max_age)*365.25))
+        max_year = str(dt.now() - datetime.timedelta(days=int(min_age)*365.25))
         if not illness:
-            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(db.text("substring(Citizen.cdob from '%/%/#\"%#\"' for '#') >= \'" + min_year + "\'")).filter(db.text("substring(Citizen.cdob from '%/%/#\"%#\"' for '#') <= \'" + max_year + "\'"))
+            result = db.session.query(Infected, Citizen).join(Citizen, Infected.cid == Citizen.cid).filter(Citizen.cdob >= min_year).filter(Citizen.cdob <= max_year)
             for r in result:
                 sub = {'age':r.citizen.cdob, 'cid':r.citizen.cid, 'infcount':r.infected.infcount, 'infcheckup':r.infected.infcheckup, 'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
