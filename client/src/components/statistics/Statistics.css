@@ -1,27 +1,34 @@
-.content {
+.content-stats {
     display: flex;
     flex-direction: column;
 }
 
-.form.container {
+.form-container-stats.container {
     width: fit-content;
     height: fit-content;
     display: flex;
 }
 
-.form.row {
+.form-row-stats.row {
     justify-content: center;
     margin-top: 40px;
     background-color: white;
     border-radius: 5px;
 }
 
-.form.col {
+.form-col-stats.col {
     padding: 20px;
     width: 200px;
 }
 
 .result-content {
+    display: flex;
+    flex-direction: column;
     margin-top: 40px;
     background-color: white;
+}
+
+.result-title {
+    display: flex;
+    justify-content: center;
 }
