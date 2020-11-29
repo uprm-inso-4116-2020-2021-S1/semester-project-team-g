@@ -31,7 +31,7 @@ class InfectedDAO:
             for r in result:
                 sub = {'municipality':r.citizen.caddress, 'cid':r.infected.cid,'infcount':r.infected.infcount,'infcheckup':r.infected.infcheckup,'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-        return jsonify(Infected = ret)
+        return jsonify(Infected_by_municipality = ret)
 
     def get_results_by_sex(sex, illness=None):
         ret = []
@@ -45,8 +45,6 @@ class InfectedDAO:
             for r in result:
                 sub = {'sex':r.citizen.cgender, 'cid':r.citizen.cid,'infcount':r.infected.infcount,'infcheckup':r.infected.infcheckup,'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-        return jsonify(Citizen_by_sex = ret)
-
         return jsonify(Infected_by_sex = ret)
 
     def get_results_by_age(min_age, max_age, illness=None):
@@ -63,7 +61,7 @@ class InfectedDAO:
             for r in result:
                 sub = {'age':r.citizen.cdob, 'cid':r.citizen.cid, 'infcount':r.infected.infcount, 'infcheckup':r.infected.infcheckup, 'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-        return jsonify(Citizen_by_age = ret)
+        return jsonify(Infected_by_age = ret)
 
     def get_results_by_month(month, illness=None):
         ret = []
@@ -77,7 +75,7 @@ class InfectedDAO:
             for r in result:
                 sub = {'cid':r.citizen.cid, 'infcount':r.infected.infcount, 'infcheckup':r.infected.infcheckup, 'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-        return jsonify(Citizen_by_month = ret)
+        return jsonify(Infected_by_month = ret)
 
     def get_results_by_year(year, illness=None):
         ret = []
@@ -91,7 +89,7 @@ class InfectedDAO:
             for r in result:
                 sub = {'cid':r.citizen.cid, 'infcount':r.infected.infcount, 'infcheckup':r.infected.infcheckup, 'infdate':r.infected.infdate, 'infname':r.infected.infname}
                 ret.append(sub)
-        return jsonify(Citizen_by_year = ret)
+        return jsonify(Infected_by_year = ret)
 
     @staticmethod
     def add_infected(cid, count, checkup, infname):
