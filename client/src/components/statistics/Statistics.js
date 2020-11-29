@@ -59,12 +59,17 @@ class Statistics extends Component {
     let result;
     switch (this.state.option) {
       case "global":
-        result = await this.props.globalFilter();
+        filterData = {
+          patientType: this.state.patientType,
+        };
+        result = await this.props.globalFilter(filterData);
         this.setState({ result: result });
         break;
       case "sex":
         filterData = {
           sex: this.state.sex,
+          patientType: this.state.patientType,
+          illness: this.state.illness,
         };
         result = await this.props.sexFilter(filterData);
         this.setState({ result: result });
@@ -72,6 +77,8 @@ class Statistics extends Component {
       case "municipality":
         filterData = {
           municipality: this.state.municipality,
+          patientType: this.state.patientType,
+          illness: this.state.illness,
         };
         result = await this.props.municipalityFilter(filterData);
         this.setState({ result: result });
@@ -80,6 +87,8 @@ class Statistics extends Component {
         filterData = {
           min_age: this.state.min_age,
           max_age: this.state.max_age,
+          patientType: this.state.patientType,
+          illness: this.state.illness,
         };
         result = await this.props.ageFilter(filterData);
         this.setState({ result: result });
@@ -87,6 +96,8 @@ class Statistics extends Component {
       case "month":
         filterData = {
           month: this.state.month,
+          patientType: this.state.patientType,
+          illness: this.state.illness,
         };
         result = await this.props.monthFilter(filterData);
         this.setState({ result: result });
@@ -94,6 +105,8 @@ class Statistics extends Component {
       case "year":
         filterData = {
           year: this.state.year,
+          patientType: this.state.patientType,
+          illness: this.state.illness,
         };
         result = await this.props.yearFilter(filterData);
         this.setState({ result: result });
@@ -106,162 +119,236 @@ class Statistics extends Component {
 
   render() {
     const { error } = this.state;
+    let illnessContent;
+    if (this.state.option !== "global") {
+      illnessContent = (
+        <Col className="form">
+          <Form.Group controlId="illness">
+            <Form.Label>Illness (Optional)</Form.Label>
+            <Form.Control
+              onChange={this.onChange}
+              type="text"
+              placeholder="Enter an illness"
+            ></Form.Control>
+          </Form.Group>
+        </Col>
+      );
+    }
     let resultContent;
+    let noResultContent;
     if (Object.keys(this.state.result).length !== 0) {
       let key = Object.keys(this.state.result)[0];
+      if (this.state.result[key].length < 1) {
+        noResultContent = (
+          <div className="result-result">
+            <h3>Results not found</h3>
+          </div>
+        );
+      }
       switch (key) {
+        case "Recovered":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Illness: {citizen.illness}</div>
+              <div>Date of Recovery: {citizen.date}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
+          break;
+        case "Recovered_by_sex":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Sex: {citizen.sex}</div>
+              <div>Illness: {citizen.illness}</div>
+              <div>Date of Recovery: {citizen.date}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
+          break;
+        case "Recovered_by_age":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Age: {citizen.age}</div>
+              <div>Illness: {citizen.illness}</div>
+              <div>Date of Recovery: {citizen.date}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
+          break;
+        case "Recovered_by_month":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Illness: {citizen.illness}</div>
+              <div>Date of Recovery: {citizen.date}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
+          break;
+        case "Recovered_by_year":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Illness: {citizen.illness}</div>
+              <div>Date of Recovery: {citizen.date}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
+          break;
+        case "Recovered_by_municipality":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Municipality {citizen.municipality}</div>
+              <div>Illness: {citizen.illness}</div>
+              <div>Date of Recovery: {citizen.date}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
+          break;
         case "Infected":
-          if (this.state.result[key].length < 1) {
-            resultContent = (
-              <div className="result-result">
-                <h3>Results not found</h3>
-              </div>
-            );
-          } else {
-            resultContent = this.state.result[key].map((citizen) => (
-              <div className="result-result">
-                <h5>Citizen: {citizen.cid}</h5>
-                <div>Illness: {citizen.infname}</div>
-                <div>Date of Infection: {citizen.infdate}</div>
-                <div>Number of times tested positive: {citizen.infcount}</div>
-                <div
-                  style={{
-                    borderTop: "1px solid #000000",
-                    height: "1px",
-                    marginBottom: "16px",
-                  }}
-                ></div>
-              </div>
-            ));
-          }
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Illness: {citizen.infname}</div>
+              <div>Date of Infection: {citizen.infdate}</div>
+              <div>Number of times tested positive: {citizen.infcount}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
           break;
-        case "Citizen_by_age":
-          if (this.state.result[key].length < 1) {
-            resultContent = (
-              <div className="result-result">
-                <h3>Results not found</h3>
-              </div>
-            );
-          } else {
-            resultContent = this.state.result[key].map((citizen) => (
-              <div className="result-result">
-                <h5>Citizen: {citizen.cid}</h5>
-                <div>Age: {citizen.age}</div>
-                <div>Illness: {citizen.infname}</div>
-                <div>Date of Infection: {citizen.infdate}</div>
-                <div>Number of times tested positive: {citizen.infcount}</div>
-                <div
-                  style={{
-                    borderTop: "1px solid #000000",
-                    height: "1px",
-                    marginBottom: "16px",
-                  }}
-                ></div>
-              </div>
-            ));
-          }
+        case "Infected_by_age":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Age: {citizen.age}</div>
+              <div>Illness: {citizen.infname}</div>
+              <div>Date of Infection: {citizen.infdate}</div>
+              <div>Number of times tested positive: {citizen.infcount}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
           break;
-        case "Citizen_by_municipality":
-          if (this.state.result[key].length < 1) {
-            resultContent = (
-              <div className="result-result">
-                <h3>Results not found</h3>
-              </div>
-            );
-          } else {
-            resultContent = this.state.result[key].map((citizen) => (
-              <div className="result-result">
-                <h5>Citizen: {citizen.cid}</h5>
-                <div>Municipality: {citizen.municipality}</div>
-                <div>Illness: {citizen.infname}</div>
-                <div>Date of Infection: {citizen.infdate}</div>
-                <div>Number of times tested positive: {citizen.infcount}</div>
-                <div
-                  style={{
-                    borderTop: "1px solid #000000",
-                    height: "1px",
-                    marginBottom: "16px",
-                  }}
-                ></div>
-              </div>
-            ));
-          }
+        case "Infected_by_municipality":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Municipality: {citizen.municipality}</div>
+              <div>Illness: {citizen.infname}</div>
+              <div>Date of Infection: {citizen.infdate}</div>
+              <div>Number of times tested positive: {citizen.infcount}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
           break;
-        case "Citizen_by_sex":
-          if (this.state.result[key].length < 1) {
-            resultContent = (
-              <div className="result-result">
-                <h3>Results not found</h3>
-              </div>
-            );
-          } else {
-            resultContent = this.state.result[key].map((citizen) => (
-              <div className="result-result">
-                <h5>Citizen: {citizen.cid}</h5>
-                <div>Sex: {citizen.sex}</div>
-                <div>Illness: {citizen.infname}</div>
-                <div>Date of Infection: {citizen.infdate}</div>
-                <div>Number of times tested positive: {citizen.infcount}</div>
-                <div
-                  style={{
-                    borderTop: "1px solid #000000",
-                    height: "1px",
-                    marginBottom: "16px",
-                  }}
-                ></div>
-              </div>
-            ));
-          }
+        case "Infected_by_sex":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Sex: {citizen.sex}</div>
+              <div>Illness: {citizen.infname}</div>
+              <div>Date of Infection: {citizen.infdate}</div>
+              <div>Number of times tested positive: {citizen.infcount}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
           break;
-        case "Citizen_by_month":
-          if (this.state.result[key].length < 1) {
-            resultContent = (
-              <div className="result-result">
-                <h3>Results not found</h3>
-              </div>
-            );
-          } else {
-            resultContent = this.state.result[key].map((citizen) => (
-              <div className="result-result">
-                <h5>Citizen: {citizen.cid}</h5>
-                <div>Illness: {citizen.infname}</div>
-                <div>Date of Infection: {citizen.infdate}</div>
-                <div>Number of times tested positive: {citizen.infcount}</div>
-                <div
-                  style={{
-                    borderTop: "1px solid #000000",
-                    height: "1px",
-                    marginBottom: "16px",
-                  }}
-                ></div>
-              </div>
-            ));
-          }
+        case "Infected_by_month":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Illness: {citizen.infname}</div>
+              <div>Date of Infection: {citizen.infdate}</div>
+              <div>Number of times tested positive: {citizen.infcount}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
           break;
-        case "Citizen_by_year":
-          if (this.state.result[key].length < 1) {
-            resultContent = (
-              <div className="result-result">
-                <h3>Results not found</h3>
-              </div>
-            );
-          } else {
-            resultContent = this.state.result[key].map((citizen) => (
-              <div className="result-result">
-                <h5>Citizen: {citizen.cid}</h5>
-                <div>Illness: {citizen.infname}</div>
-                <div>Date of Infection: {citizen.infdate}</div>
-                <div>Number of times tested positive: {citizen.infcount}</div>
-                <div
-                  style={{
-                    borderTop: "1px solid #000000",
-                    height: "1px",
-                    marginBottom: "16px",
-                  }}
-                ></div>
-              </div>
-            ));
-          }
+        case "Infected_by_year":
+          resultContent = this.state.result[key].map((citizen) => (
+            <div className="result-result">
+              <h5>Citizen: {citizen.cid}</h5>
+              <div>Illness: {citizen.infname}</div>
+              <div>Date of Infection: {citizen.infdate}</div>
+              <div>Number of times tested positive: {citizen.infcount}</div>
+              <div
+                style={{
+                  borderTop: "1px solid #000000",
+                  height: "1px",
+                  marginBottom: "16px",
+                }}
+              ></div>
+            </div>
+          ));
           break;
         default:
           break;
@@ -271,7 +358,7 @@ class Statistics extends Component {
     switch (this.state.option) {
       case "sex":
         additionalContent = (
-          <Col className="form">
+          <Col className="form-col-stats">
             <Form.Group controlId="sex">
               <Form.Label>Sex</Form.Label>
               <Form.Control
@@ -291,7 +378,7 @@ class Statistics extends Component {
         break;
       case "municipality":
         additionalContent = (
-          <Col className="form">
+          <Col className="form-col-stats">
             <Form.Group controlId="municipality">
               <Form.Label>Municipality</Form.Label>
               <Form.Control
@@ -307,7 +394,7 @@ class Statistics extends Component {
         break;
       case "age":
         additionalContent = (
-          <Col className="form">
+          <Col className="form-col-stats">
             <Form.Group controlId="min_age">
               <Form.Label>Minimum Age</Form.Label>
               <Form.Control
@@ -347,7 +434,7 @@ class Statistics extends Component {
         break;
       case "month":
         additionalContent = (
-          <Col className="form">
+          <Col className="form-col-stats">
             <Form.Group controlId="month">
               <Form.Label>Month</Form.Label>
               <Form.Control
@@ -378,7 +465,7 @@ class Statistics extends Component {
         break;
       case "year":
         additionalContent = (
-          <Col className="form">
+          <Col className="form-col-stats">
             <Form.Group controlId="year">
               <Form.Label>Year</Form.Label>
               <Form.Control
@@ -396,14 +483,14 @@ class Statistics extends Component {
         break;
     }
     return (
-      <div className="content">
-        <Container className="form">
+      <div className="content-stats">
+        <Container className="form-container-stats">
           <Form onSubmit={this.onSubmit}>
-            <div style={{ marginTop: "20px", backgroundColor: "white"}}>
+            <div style={{ marginTop: "20px", backgroundColor: "white" }}>
               <b>Find all sorts of information using our API</b>
             </div>
-            <Row className="form">
-              <Col className="form">
+            <Row className="form-row-stats">
+              <Col className="form-col-stats">
                 <Form.Group controlId="patientType">
                   <Form.Label>Patient Type</Form.Label>
                   <Form.Control
@@ -411,13 +498,14 @@ class Statistics extends Component {
                     as="select"
                     custom
                     placeholder="Select type"
+                    required
                   >
                     <option value="infected">Infected</option>
                     <option value="recovered">Recovered</option>
                   </Form.Control>
                 </Form.Group>
               </Col>
-              <Col className="form">
+              <Col className="form-col-stats">
                 <Form.Group controlId="option">
                   <Form.Label>Filter</Form.Label>
                   <Form.Control
@@ -425,6 +513,7 @@ class Statistics extends Component {
                     as="select"
                     custom
                     placeholder="Select type"
+                    required
                   >
                     <option value="global">Global</option>
                     <option value="sex">Sex</option>
@@ -435,8 +524,9 @@ class Statistics extends Component {
                   </Form.Control>
                 </Form.Group>
               </Col>
+              {illnessContent}
               {additionalContent}
-              <Col className="form" style={{ paddingTop: "50px" }}>
+              <Col className="form-col-stats" style={{ paddingTop: "50px" }}>
                 <Button
                   style={{ width: "80px" }}
                   variant="primary"
@@ -453,6 +543,7 @@ class Statistics extends Component {
           <div className="result-title">
             <h3>Results of your Search</h3>
           </div>
+          {noResultContent}
           {resultContent}
         </div>
       </div>

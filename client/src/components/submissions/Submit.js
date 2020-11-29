@@ -64,7 +64,7 @@ class Submit extends Component {
     this.setState({ [e.target.id]: e.target.value });
   };
 
-  onSubmit = (e) => {
+  onSubmit = async (e) => {
     e.preventDefault();
     const patientData = {
       firstname: this.state.firstname,
@@ -80,8 +80,10 @@ class Submit extends Component {
       institution_name: this.state.institution_name,
       oid: this.props.auth.user.oid
     };
-    this.props.submitInfo(patientData, this.props.history);
-    this.resetState();
+    let res = await this.props.submitInfo(patientData, this.props.history);
+    if(res) {
+      this.resetState();
+    }
   };
 
   render() {
