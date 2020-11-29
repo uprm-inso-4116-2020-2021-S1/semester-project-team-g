@@ -10,7 +10,10 @@ import Login from "./components/authentication/Login";
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Submit from "./components/submissions/Submit";
+import Statistics from "./components/statistics/Statistics";
 import PrivateRoute from "./components/private-route/PrivateRoute";
+
+
 import setAuthToken from "./utils/setAuthToken";
 import { logoutUser, setCurrentUser } from "./actions/authAction";
 import jwtDecode from "jwt-decode";
@@ -40,7 +43,8 @@ function App() {
       <Router>
         <div className="App">
           <Navbar />
-          <Route exact path="/" component={Landing} />
+          <Route exact path="/home" component={Landing} />
+          <Route exact path="/" component={Statistics} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/submission" component={Submit} />
 

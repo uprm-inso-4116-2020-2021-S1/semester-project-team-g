@@ -27,8 +27,8 @@ def get_results_by_sex(sex, illness):
     return CitizenHandler.CitizenHandler.get_results_by_sex(sex, illness)
 
 def get_results_by_age(min_age, max_age, illness):
-    if max_age < min_age:
-        return make_response("Max age cannot be less than the minimum age.", 400)
+    if int(max_age) < int(min_age):
+        return make_response(jsonify({"age": "The minimum age cannot be larger than the maximum age."}), 400)
 
     return CitizenHandler.CitizenHandler.get_results_by_age(min_age, max_age, illness)
 
