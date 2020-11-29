@@ -84,7 +84,7 @@ class RecoveredDAO:
                 sub = { 'cid':r.recovered.cid,'date': r.recovered.rdate, 'length': r.recovered.rlength, 'illness': r.recovered.rillness}
                 ret.append(sub)
         else:
-            result = db.session.query(Recovered, Citizen).join(Citizen, Recovered.cid == Citizen.cid).filter(db.extract('year', Recovered.infdate) == int(year), Recovered.rillness == illness)
+            result = db.session.query(Recovered, Citizen).join(Citizen, Recovered.cid == Citizen.cid).filter(db.extract('year', Recovered.rdate) == int(year), Recovered.rillness == illness)
             for r in result:
                 sub = {'cid':r.recovered.cid,'date': r.recovered.rdate, 'length': r.recovered.rlength, 'illness': r.recovered.rillness}
                 ret.append(sub)
