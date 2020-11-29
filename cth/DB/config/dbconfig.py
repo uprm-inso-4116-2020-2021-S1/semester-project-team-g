@@ -59,7 +59,7 @@ class DBManager:
         )
         cursor.execute(
             "CREATE TABLE Recovered(cid integer primary key references Citizen(cid), rdate varchar(30), "
-            "rlength varchar(30), rillnes varchar(30) references Illness(iname));"
+            "rlength varchar(30), rillness varchar(30) references Illness(iname));"
         )
         cursor.connection.commit()
 

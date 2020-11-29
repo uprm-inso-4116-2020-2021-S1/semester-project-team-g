@@ -1,16 +1,13 @@
-from cth.DB.DAO import InfectedDAO
-class InfectedHandler:
+from cth.DB.DAO import RecoveredDAO
 
+class RecoveredHandler:
     def get_global_results():
-
-        cursor = InfectedDAO.InfectedDAO
-
+        cursor = RecoveredDAO.RecoveredDAO
         results = cursor.get_global_results()
-
         return results
 
     def get_results_by_municipality(municipality, illness=None):
-        cursor = InfectedDAO.InfectedDAO
+        cursor = RecoveredDAO.RecoveredDAO
         if illness==None:
             results = cursor.get_results_by_municipality(municipality)
         else:
@@ -18,7 +15,7 @@ class InfectedHandler:
         return results
 
     def get_results_by_sex(sex, illness=None):
-        cursor = InfectedDAO.InfectedDAO
+        cursor = RecoveredDAO.RecoveredDAO
         if not illness:
             results = cursor.get_results_by_sex(sex)
         else:
@@ -26,15 +23,15 @@ class InfectedHandler:
         return results
 
     def get_results_by_age(min_age, max_age, illness=None):
-        cursor = InfectedDAO.InfectedDAO
+        cursor = RecoveredDAO.RecoveredDAO
         if not illness:
             results = cursor.get_results_by_age(min_age,max_age)
         else:
-            results = cursor.get_results_by_age(min_age,max_age,illness=illness)
+            results = cursor.get_results_by_municipality(min_age,max_age, illness=illness)
         return results
 
     def get_results_by_month(month, illness=None):
-        cursor = InfectedDAO.InfectedDAO
+        cursor = RecoveredDAO.RecoveredDAO
         if not illness:
             results = cursor.get_results_by_month(month)
         else:
@@ -42,7 +39,7 @@ class InfectedHandler:
         return results
 
     def get_results_by_year(year, illness=None):
-        cursor = InfectedDAO.InfectedDAO
+        cursor = RecoveredDAO.RecoveredDAO
         if not illness:
             results = cursor.get_results_by_year(year)
         else:
@@ -50,5 +47,5 @@ class InfectedHandler:
         return results
 
     @staticmethod
-    def add_infected(cid, count, checkup, infname):
-        InfectedDAO.InfectedDAO.add_infected(cid, count, checkup, infname)
+    def add_recovered(cid, rdate, rlength, rillness):
+        RecoveredDAO.RecoveredDAO.add_recovered(cid, rdate, rlength, rillness)
