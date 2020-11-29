@@ -39,7 +39,7 @@ class DBManager:
         )
         cursor.execute(
             "CREATE TABLE Citizen(cid serial primary key, cfirstname varchar(30), clastname varchar(30), "
-            "cDOB varchar(30), cgender varchar(30), caddress varchar(30), cphone varchar(30), " 
+            "cDOB date, cgender varchar(30), caddress varchar(30), cphone varchar(30), " 
             "cssn numeric(9, 0) unique, ishp boolean);"
         )
         cursor.execute(
@@ -54,11 +54,12 @@ class DBManager:
         )
         cursor.execute(
             "CREATE TABLE Infected(cid integer primary key references Citizen(cid), infcount integer, "
-            "infcheckup varchar(30), infdate timestamp without time zone default (now() at time zone 'utc'), " 
+            "infcheckup integer default 14, infdate timestamp without time zone default (now() at time zone 'utc'), " 
             "infname varchar(30) references Illness(iname));"
         )
         cursor.execute(
-            "CREATE TABLE Recovered(cid integer primary key references Citizen(cid), rdate varchar(30), "
+            "CREATE TABLE Recovered(cid integer primary key references Citizen(cid), " 
+            "rdate timestamp without time zone default (now() at time zone 'utc'), "
             "rlength varchar(30), rillness varchar(30) references Illness(iname));"
         )
         cursor.connection.commit()
@@ -143,11 +144,11 @@ class DBManager:
         # POPULATE INFECTED TABLE
         cursor.execute(
             "INSERT INTO Infected(cid, infcount, infcheckup, infname) " 
-            "VALUES (1, 1, '11/12/2020', 'COVID-19');"
+            "VALUES (1, 1, 14, 'COVID-19');"
         )
         cursor.execute(
             "INSERT INTO Infected(cid, infcount, infcheckup, infdate, infname) "
-            "VALUES (4, 1, '11/12/2020', '8/8/2020', 'COVID-19');"
+            "VALUES (4, 1, 14, '8/8/2020', 'COVID-19');"
         )
         self.connection.commit()
 
