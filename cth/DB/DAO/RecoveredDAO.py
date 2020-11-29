@@ -30,7 +30,7 @@ class RecoveredDAO:
             for r in result:
                 sub = {'municipality':r.citizen.caddress, 'cid':r.recovered.cid,'date': r.recovered.rdate, 'length': r.recovered.rlength, 'illness': r.recovered.rillness}
                 ret.append(sub)
-        return jsonify(Citizen = ret)
+        return jsonify(Recovered_by_municipality = ret)
 
     def get_results_by_sex(sex, illness=None):
         ret = []
@@ -44,7 +44,7 @@ class RecoveredDAO:
             for r in result:
                 sub = {'sex':r.citizen.cgender, 'cid':r.recovered.cid,'date': r.recovered.rdate, 'length': r.recovered.rlength, 'illness': r.recovered.rillness}
                 ret.append(sub)
-        return jsonify(Citizen_by_sex = ret)
+        return jsonify(Recovered_by_sex = ret)
 
     def get_results_by_age(min_age, max_age, illness=None):
         ret = []
@@ -60,7 +60,7 @@ class RecoveredDAO:
             for r in result:
                 sub = {'age':r.citizen.cdob, 'cid':r.recovered.cid,'date': r.recovered.rdate, 'length': r.recovered.rlength, 'illness': r.recovered.rillness}
                 ret.append(sub)
-        return jsonify(Citizen_by_age = ret)
+        return jsonify(Recovered_by_age = ret)
 
     def get_results_by_month(month, illness=None):
         ret = []
@@ -74,7 +74,7 @@ class RecoveredDAO:
             for r in result:
                 sub = {'cid':r.recovered.cid,'date': r.recovered.rdate, 'length': r.recovered.rlength, 'illness': r.recovered.rillness}
                 ret.append(sub)
-        return jsonify(Citizen_by_month = ret)
+        return jsonify(Recovered_by_month = ret)
 
     def get_results_by_year(year, illness=None):
         ret = []
@@ -88,7 +88,7 @@ class RecoveredDAO:
             for r in result:
                 sub = {'cid':r.recovered.cid,'date': r.recovered.rdate, 'length': r.recovered.rlength, 'illness': r.recovered.rillness}
                 ret.append(sub)
-        return jsonify(Citizen_by_year = ret)
+        return jsonify(Recovered_by_year = ret)
 
     @staticmethod
     def add_recovered(cid, rdate, rlength, rillness):
