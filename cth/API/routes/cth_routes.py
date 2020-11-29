@@ -2,6 +2,7 @@ from flask import request, make_response, render_template
 import requests
 from cth.API.handler import CitizenHandler
 from cth.API.handler import InfectedHandler
+from cth.API.handler import RecoveredHandler
 from cth.API.handler import TestHandler
 from cth import db
 from cth.models import Institution, Operator, Citizen, Test, Infected, Recovered, Illness
@@ -19,24 +20,45 @@ Place routes here as basic python function.
 def get_global_results():
     return InfectedHandler.InfectedHandler.get_global_results()
 
+def get_global_recovered_results():
+    return RecoveredHandler.RecoveredHandler.get_global_results()
 
-def get_results_by_municipality(municipality, illness):
+def get_results_by_municipality(municipality, illness=None):
     return InfectedHandler.InfectedHandler.get_results_by_municipality(municipality,illness)
 
+def get_recovered_results_by_municipality(municipality, illness = None):
+    return RecoveredHandler.RecoveredHandler.get_results_by_municipality(municipality, illness)
+
 def get_results_by_sex(sex, illness):
-    return CitizenHandler.CitizenHandler.get_results_by_sex(sex, illness)
+    return InfectedHandler.InfectedHandler.get_results_by_sex(sex, illness)
+
+def get_recovered_results_by_sex(sex,illness):
+    return RecoveredHandler.RecoveredHandler.get_results_by_sex(sex,illness)
 
 def get_results_by_age(min_age, max_age, illness):
     if int(max_age) < int(min_age):
         return make_response(jsonify({"age": "The minimum age cannot be larger than the maximum age."}), 400)
 
-    return CitizenHandler.CitizenHandler.get_results_by_age(min_age, max_age, illness)
+    return InfectedHandler.InfectedHandler.get_results_by_age(min_age, max_age, illness)
+
+def get_recovered_results_by_age(min_age,max_age,illness):
+    if int(max_age) < int(min_age):
+        return make_response(jsonify({"age": "The minimum age cannot be larger than the maximum age."}), 400)
+
+    return RecoveredHandler.RecoveredHandler.get_results_by_age(min_age,max_age,illness)
+
 
 def get_results_by_month(month, illness):
-    return CitizenHandler.CitizenHandler.get_results_by_month(month, illness)
+    return InfectedHandler.InfectedHandler.get_results_by_month(month, illness)
+
+def get_recovered_results_by_month(month, illness):
+    return RecoveredHandler.RecoveredHandler.get_results_by_month(month, illness)
 
 def get_results_by_year(year, illness):
-    return CitizenHandler.CitizenHandler.get_results_by_year(year, illness)
+    return InfectedHandler.InfectedHandler.get_results_by_year(year, illness)
+
+def get_recovered_results_by_year(year,illness):
+    return RecoveredHandler.RecoveredHandler.get_results_by_year(year,illness)
 
 
 def operator_login():
