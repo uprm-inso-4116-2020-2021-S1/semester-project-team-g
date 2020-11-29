@@ -3,7 +3,6 @@ from cth.models import Citizen
 from cth.models import Infected
 from flask import jsonify
 from datetime import datetime as dt
-from dateutil.relativedelta import relativedelta
 import datetime
 
 class CitizenDAO:
