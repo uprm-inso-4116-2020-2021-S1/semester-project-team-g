@@ -1,0 +1,27 @@
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.form.container {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+}
+
+.form.row {
+    justify-content: center;
+    margin-top: 40px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.form.col {
+    padding: 20px;
+    width: 200px;
+}
+
+.result-content {
+    margin-top: 40px;
+    background-color: white;
+}
