@@ -1,12 +1,6 @@
 import axios from "axios";
 import { GET_ERRORS } from "./types";
 
-// export const globalFilter = (filterData) => async dispatch => {
-//   let response = await axios.get("http://localhost:5000/results-global");
-//   let data = await response.data;
-//   return data;
-// };
-
 export const globalFilter = (filterData) => async (dispatch) => {
   let pType = filterData.patientType === "infected" ? "infected" : "recovered";
   let response = await axios
