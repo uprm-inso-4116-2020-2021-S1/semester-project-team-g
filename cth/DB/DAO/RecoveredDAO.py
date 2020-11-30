@@ -91,17 +91,19 @@ class RecoveredDAO:
         return jsonify(Recovered_by_year = ret)
 
     @staticmethod
-    def add_recovered(cid, rdate, rlength, rillness):
-        new_recovered = Recovered(cid=cid, rdate=rdate, rlength=rlength, rillness=rillness)
+    def add_recovered(cid, rlength, rillness):
+        new_recovered = Recovered(cid=cid,  rlength=rlength, rillness=rillness)
         db.session.add(new_recovered)
         db.session.commit()
         return new_recovered.cid
-        
-    def update_data(self, patient, information):
-        #TODO
-        return ''
+
+    @staticmethod
+    def update_recovered(cid, rlength,rillness ):
+        db.session.update(Recovered).where(Recovered.cid==cid).values( rlength=rlength, rillness=rillness)
+        db.session.commit()
 
 
-    def delete_data(self, patient):
-        #TODO
-        return ''
+    @staticmethod
+    def delete_recovered(id):
+        db.session.query(Recovered).filter(Recovered.id == id).delete()
+        db.session.commit()

@@ -20,17 +20,35 @@ class CitizenDAO:
 
     @staticmethod
     def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp):
+
+
         new_citizen = Citizen(cfirstname=firstname, clastname=lastname, cdob=DOB, cgender=sex, caddress=address,
                               cphone=phone, cssn=ssn, ishp=ishp)
         db.session.add(new_citizen)
         db.session.commit()
         return new_citizen.cid
-        
-    def update_data(self, patient, information):
-        #TODO
-        return ''
+
+    @staticmethod
+    def update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp):
 
 
-    def delete_data(self, patient):
-        #TODO
-        return ''
+        db.session.update(Citizen).where(Citizen.cssn==ssn).values(cfirstname=firstname, clastname=lastname, cdob=DOB, cgender=sex, caddress=address,
+                              cphone=phone, cssn=ssn, ishp=ishp)
+        db.session.commit()
+
+    @staticmethod
+    def find_citizen(ssn):
+        result = db.session.query(Citizen).filter(Citizen.cssn == ssn).first()
+        if result is not None:
+            ret = {'cid':result.cid}
+            return ret
+        else:
+            return False
+
+    @staticmethod
+    def find_citizen_byid(id):
+        result = db.session.query(Citizen).filter(Citizen.cid == id)
+
+        ret = {'cid':result.cid, 'firstname':result.cfirstname, 'lastname':result.clastname , 'DOB':result.cDOB, 'sex':result.cgender, 'address':result.caddress,'phone':result.cphone,'ssn':result.cssn}
+
+        return jsonify(Citizen=ret)

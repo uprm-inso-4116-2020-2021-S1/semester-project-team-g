@@ -7,6 +7,7 @@ from cth.API.handler import TestHandler
 from cth import db
 from cth.models import Institution, Operator, Citizen, Test, Infected, Recovered, Illness
 from cth.DB.DAO import OperatorDAO
+from cth.DB.DAO import InfectedDAO
 from flask import jsonify
 import json
 import jwt
@@ -17,6 +18,7 @@ from cth.API.validation.form_validation import FormValidation
 '''
 Place routes here as basic python function.
 '''
+
 def get_global_results():
     return InfectedHandler.InfectedHandler.get_global_results()
 
@@ -75,11 +77,12 @@ def operator_login():
 
 
 def input_form():
+    InfectedDAO.InfectedDAO.delete_infected(20)
     form = request.json
     fv = FormValidation()
     result = fv.validate_all_functions(form)
     if len(result) == 0:
-        cid = CitizenHandler.CitizenHandler.add_citizen(form['firstname'], form['lastname'], form['date_of_birth'],
+        cid = CitizenHandler.CitizenHandler.add_case(form['firstname'], form['lastname'], form['date_of_birth'],
                                                         form['sex'], form['address'], form['phone'], form['ssn'],
                                                         form['ishp'], form['is_positive'], form['illness']
                                                         )
