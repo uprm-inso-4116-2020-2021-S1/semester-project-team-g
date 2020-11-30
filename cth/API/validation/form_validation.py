@@ -1,8 +1,7 @@
 import datetime
 from datetime import datetime as dt
 import re
-from flask import jsonify
-
+ 
 class FormValidation:
     def validate_all_functions(self, data):
         self.data = data
