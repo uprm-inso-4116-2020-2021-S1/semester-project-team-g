@@ -29,7 +29,7 @@ class CitizenHandler:
             infected_search = InfectedDAO.InfectedDAO.find_infected(search['cid'])
 
             if not infected_search:
-                InfectedHandler.InfectedHandler.add_infected(cid,  1, '14', infname)
+                InfectedHandler.InfectedHandler.add_infected(search['cid'],  1, '14', infname)
                 return search['cid']
 
             else:
@@ -40,8 +40,16 @@ class CitizenHandler:
                 return search['cid']
 
     @staticmethod
-    def update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp):
-        cursor = CitizenDAO.CitizenDAO.update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp, isPositive, infname)
+    def update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, email ,ishp):
+        search = CitizenDAO.CitizenDAO.find_citizen(ssn)
+
+        if not search:
+            return -1
+
+        cursor = CitizenDAO.CitizenDAO
+        cursor.update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp)
+
+        return search['cid']
 
     @staticmethod
     def find_citizen(ssn):

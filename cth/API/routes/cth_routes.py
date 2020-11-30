@@ -6,7 +6,7 @@ from cth.API.handler import RecoveredHandler
 from cth.API.handler import TestHandler
 from cth import db
 from cth.models import Institution, Operator, Citizen, Test, Infected, Recovered, Illness
-from cth.DB.DAO import OperatorDAO
+from cth.DB.DAO import OperatorDAO, RecoveredDAO
 from cth.DB.DAO import InfectedDAO
 from flask import jsonify
 import json
@@ -77,19 +77,36 @@ def operator_login():
 
 
 def input_form():
-    InfectedDAO.InfectedDAO.delete_infected(20)
     form = request.json
     fv = FormValidation()
     result = fv.validate_all_functions(form)
     if len(result) == 0:
         cid = CitizenHandler.CitizenHandler.add_case(form['firstname'], form['lastname'], form['date_of_birth'],
-                                                        form['sex'], form['address'], form['phone'], form['ssn'],
+                                                        form['sex'], form['address'], form['phone'], form['ssn'],#, form['email'],
                                                         form['ishp'], form['is_positive'], form['illness']
                                                         )
         tid = TestHandler.TestHandler.add_test(form['illness'], form['is_positive'],
                                                form['institution_name'], cid, form['oid']
                                                )
+
         return make_response(jsonify({"message": "Submission was successful"}), 200)
     else:
         payload = make_response(jsonify(result), 400)
         return payload
+
+def update_citizen():
+    form = request.json
+
+    fv = FormValidation()
+
+    result = fv.vallidate_all_functions(form)
+
+    if len(result) == 0:
+
+        cid = CitizenHandler.CitizenHandler.update_citizen(form['firstname'], form['lastname'], form['date_of_birth'], form['sex'], form['address'], form['phone'], form['ssn'], form['email'], form['ishp'])
+
+        if cid == -1:
+            return make_response(jsonify({"message": "User not found"}), 400)
+
+        else:
+            return make_response(jsonify({"message": "Submission was successful"}), 200)

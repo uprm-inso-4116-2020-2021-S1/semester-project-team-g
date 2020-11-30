@@ -111,7 +111,7 @@ class InfectedDAO:
 
     @staticmethod
     def find_infected(cid):
-        result = db.session.query(Infected).filter(Citizen.cid == cid).first()
+        result = db.session.query(Infected).filter(Infected.cid == cid).first()
 
         if result is not None:
             ret = {'cid':result.cid, 'infcount':result.infcount, 'infcheckup':result.infcheckup , 'infdate':result.infdate, 'infname':result.infname}

@@ -29,11 +29,9 @@ class CitizenDAO:
         return new_citizen.cid
 
     @staticmethod
-    def update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp):
-
-
+    def update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, email , ishp):
         db.session.update(Citizen).where(Citizen.cssn==ssn).values(cfirstname=firstname, clastname=lastname, cdob=DOB, cgender=sex, caddress=address,
-                              cphone=phone, cssn=ssn, ishp=ishp)
+                              cphone=phone, cssn=ssn, cemail = email , ishp=ishp)
         db.session.commit()
 
     @staticmethod

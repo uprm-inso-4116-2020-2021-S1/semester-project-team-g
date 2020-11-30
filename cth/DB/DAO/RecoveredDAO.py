@@ -105,5 +105,14 @@ class RecoveredDAO:
 
     @staticmethod
     def delete_recovered(id):
-        db.session.query(Recovered).filter(Recovered.id == id).delete()
+        db.session.query(Recovered).filter(Recovered.cid == id).delete()
         db.session.commit()
+
+    @staticmethod
+    def find_recovered(id):
+        result = db.session.query(Recovered).filter(Recovered.cid == id).first()
+        if result is not None:
+            ret = {'cid':result.cid}
+            return ret
+        else:
+            return False
