@@ -95,14 +95,13 @@ def input_form():
         return payload
 
 def update_citizen():
-    form = request.json
 
+    form = request.json
     fv = FormValidation()
 
-    result = fv.vallidate_all_functions(form)
+    result = fv.validate_citizen(form)
 
     if len(result) == 0:
-
         cid = CitizenHandler.CitizenHandler.update_citizen(form['firstname'], form['lastname'], form['date_of_birth'], form['sex'], form['address'], form['phone'], form['ssn'], form['email'], form['ishp'])
 
         if cid == -1:
@@ -110,3 +109,7 @@ def update_citizen():
 
         else:
             return make_response(jsonify({"message": "Submission was successful"}), 200)
+
+    else:
+        payload = make_response(jsonify(result), 400)
+        return payload
