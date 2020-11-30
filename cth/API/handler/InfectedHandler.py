@@ -1,4 +1,4 @@
-from cth.DB.DAO import InfectedDAO
+from cth.DB.DAO import InfectedDAO, RecoveredDAO
 class InfectedHandler:
 
     def get_global_results():
@@ -52,3 +52,8 @@ class InfectedHandler:
     @staticmethod
     def add_infected(cid, count, checkup, infname):
         InfectedDAO.InfectedDAO.add_infected(cid, count, checkup, infname)
+
+        search = RecoveredDAO.RecoveredDAO.find_recovered(cid)
+
+        if search:
+            RecoveredDAO.RecoveredDAO.delete_recovered(cid, infname)
