@@ -18,7 +18,7 @@ class FormValidation:
 
     def validate_citizen(self, data):
         self.data = data
-        functions = [func for func in dir(FormValidation) if callable(getattr(FormValidation, func)) and func.startswith("validate") and func != "validate_all_functions" and func != "validate_illness" and func != "validate_institution" and func != "validate_is_ppositive" ]
+        functions = [func for func in dir(FormValidation) if callable(getattr(FormValidation, func)) and func.startswith("validate") and func != "validate_all_functions" and func != "validate_illness" and func != "validate_institution" and func != "validate_is_positive" ]
         error_messages = {}
         for func in functions:
             field_name = func.split("validate_")[1]
