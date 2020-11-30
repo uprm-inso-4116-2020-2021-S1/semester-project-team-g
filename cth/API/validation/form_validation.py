@@ -1,7 +1,7 @@
 import datetime
 from datetime import datetime as dt
 import re
-
+ 
 class FormValidation:
     def validate_all_functions(self, data):
         self.data = data
@@ -14,6 +14,21 @@ class FormValidation:
                 error_messages[field_name] = result
 
         return error_messages
+
+    def validate_citizen(self, data):
+        self.data = data
+        functions = [func for func in dir(FormValidation) if callable(getattr(FormValidation, func)) and func.startswith("validate") and func != "validate_all_functions" and func != "validate_illness" and func != "validate_institution" and func != "validate_is_positive" ]
+        error_messages = {}
+        for func in functions:
+            field_name = func.split("validate_")[1]
+            result = eval("self." + func + "()")
+
+            if result != None:
+                error_messages[field_name] = result
+
+            return error_messages
+
+
 
     def validate_first_name(self, data=None):
         if data:
@@ -131,15 +146,16 @@ class FormValidation:
         if is_positive != True and is_positive != False :
             return "Error: is_positive has to be 'True' or 'False'!"
 
-    # def validate_email(self, data =None):
-    #     if data:
-    #         self.data = data
-    #
-    #     if "email" not in self.data: return "Error: is_positive is not present on the json!"
-    #     email = self.data["email"]
-    #     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-    #
-    #     if not (re.search(regex,email)):return "Error: Invalid email format try 'example@email.com' "
+
+    def validate_email(self, data =None):
+        if data:
+            self.data = data
+
+        if "email" not in self.data: return "Error: is_positive is not present on the json!"
+        email = self.data["email"]
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+
+        if not (re.search(regex,email)):return "Error: Invalid email format try 'example@email.com' "
 
 
 
@@ -163,16 +179,12 @@ class FormValidation:
 #       "firstname": "Jose",
 #       "lastname": "Biescas",
 #       "address": "Calle Manuel 00123",
-#       "date_of_birth": "100/1/1999",
+#       "date_of_birth": "10/1/1999",
 #       "phone": "787-555-5555",
 #       "sex": "male",
 #       "ssn": "123-45-6789",
 #       "ishp": "alive",
-#       "illness": "covid-19",
-#       "is_positive": "positive",
-#       "institution_name": "Hospital Mutuo",#institution_name
-#       "timestamp": "11/22/2020"
+#       "email":"tupapito@gmail.com"
 #     }
-# result = ( FormValidation().validate_all_functions(patientData) )
+# result = ( FormValidation().validate_citizen(patientData) )
 # print(result)
-# print(jsonify(result))
