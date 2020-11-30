@@ -1,4 +1,5 @@
 from cth.DB.DAO import RecoveredDAO
+from cth.DB.DAO import InfectedDAO
 
 class RecoveredHandler:
     def get_global_results():
@@ -47,5 +48,6 @@ class RecoveredHandler:
         return results
 
     @staticmethod
-    def add_recovered(cid, rdate, rlength, rillness):
-        RecoveredDAO.RecoveredDAO.add_recovered(cid, rdate, rlength, rillness)
+    def add_recovered(cid, rlength, rillness):
+        RecoveredDAO.RecoveredDAO.add_recovered(cid, rlength, rillness)
+        InfectedDAO.InfectedDAO.delete_infected(cid, rillness)

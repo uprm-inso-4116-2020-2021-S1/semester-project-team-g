@@ -91,18 +91,32 @@ class InfectedDAO:
                 ret.append(sub)
         return jsonify(Infected_by_year = ret)
 
+
+
     @staticmethod
     def add_infected(cid, count, checkup, infname):
         new_infected = Infected(cid=cid, infcount=count, infcheckup=checkup, infname=infname)
         db.session.add(new_infected)
         db.session.commit()
 
+    @staticmethod
+    def update_infected(id,count, checkup, infname ):
+        db.session.update(Infected).filter(Infected.cid==id).values(infcount=count, infcheckup=checkup, infname=infname)
+        db.session.commit()
 
-    def update_data(self, patient, information):
-        #TODO
-        return ''
+    @staticmethod
+    def delete_infected(id,infname):
+        db.session.query(Infected).filter(Infected.cid==id).filter(Infected.infname == infname).delete()
+        db.session.commit()
 
+    @staticmethod
+    def find_infected(cid):
+        result = db.session.query(Infected).filter(Infected.cid == cid).first()
 
-    def delete_data(self, patient):
-        #TODO
-        return ''
+        if result is not None:
+            ret = {'cid':result.cid, 'infcount':result.infcount, 'infcheckup':result.infcheckup , 'infdate':result.infdate, 'infname':result.infname}
+
+            return ret
+
+        else :
+            return False

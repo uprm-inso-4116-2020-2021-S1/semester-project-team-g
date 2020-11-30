@@ -131,6 +131,20 @@ class FormValidation:
         if is_positive != True and is_positive != False :
             return "Error: is_positive has to be 'True' or 'False'!"
 
+    # def validate_email(self, data =None):
+    #     if data:
+    #         self.data = data
+    #
+    #     if "email" not in self.data: return "Error: is_positive is not present on the json!"
+    #     email = self.data["email"]
+    #     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    #
+    #     if not (re.search(regex,email)):return "Error: Invalid email format try 'example@email.com' "
+
+
+
+
+
 
 
 # fv = FormValidation()
