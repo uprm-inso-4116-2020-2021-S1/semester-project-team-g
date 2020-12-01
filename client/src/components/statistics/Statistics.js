@@ -151,6 +151,7 @@ class Statistics extends Component {
             <div className="result-result">
               <h5>Citizen: {citizen.cid}</h5>
               <div>Illness: {citizen.illness}</div>
+              <div>Days to Recover: {citizen.length}</div>
               <div>Date of Recovery: {citizen.date}</div>
               <div
                 style={{
@@ -168,6 +169,7 @@ class Statistics extends Component {
               <h5>Citizen: {citizen.cid}</h5>
               <div>Sex: {citizen.sex}</div>
               <div>Illness: {citizen.illness}</div>
+              <div>Days to Recover: {citizen.length}</div>
               <div>Date of Recovery: {citizen.date}</div>
               <div
                 style={{
@@ -185,6 +187,7 @@ class Statistics extends Component {
               <h5>Citizen: {citizen.cid}</h5>
               <div>Age: {citizen.age}</div>
               <div>Illness: {citizen.illness}</div>
+              <div>Days to Recover: {citizen.length}</div>
               <div>Date of Recovery: {citizen.date}</div>
               <div
                 style={{
@@ -201,6 +204,7 @@ class Statistics extends Component {
             <div className="result-result">
               <h5>Citizen: {citizen.cid}</h5>
               <div>Illness: {citizen.illness}</div>
+              <div>Days to Recover: {citizen.length}</div>
               <div>Date of Recovery: {citizen.date}</div>
               <div
                 style={{
@@ -217,6 +221,7 @@ class Statistics extends Component {
             <div className="result-result">
               <h5>Citizen: {citizen.cid}</h5>
               <div>Illness: {citizen.illness}</div>
+              <div>Days to Recover: {citizen.length}</div>
               <div>Date of Recovery: {citizen.date}</div>
               <div
                 style={{
@@ -234,6 +239,7 @@ class Statistics extends Component {
               <h5>Citizen: {citizen.cid}</h5>
               <div>Municipality {citizen.municipality}</div>
               <div>Illness: {citizen.illness}</div>
+              <div>Days to Recover: {citizen.length}</div>
               <div>Date of Recovery: {citizen.date}</div>
               <div
                 style={{
