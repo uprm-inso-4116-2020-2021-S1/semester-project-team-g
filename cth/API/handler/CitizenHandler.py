@@ -15,29 +15,18 @@ class CitizenHandler:
         return results
 
     @staticmethod
-    def add_case(firstname, lastname, DOB, sex, address, phone, ssn, ishp, isPositive, infname):
+    def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, email, ishp):
 
         search = CitizenDAO.CitizenDAO.find_citizen(ssn)
 
         if not search:
-            cid   = CitizenDAO.CitizenDAO.add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp)
-            InfectedHandler.InfectedHandler.add_infected(cid,  1, '14', infname)
+            cid   = CitizenDAO.CitizenDAO.add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, email, ishp)
             return cid
 
-        else:
+        return False
 
-            infected_search = InfectedDAO.InfectedDAO.find_infected(search['cid'])
 
-            if not infected_search:
-                InfectedHandler.InfectedHandler.add_infected(search['cid'],  1, '14', infname)
-                return search['cid']
 
-            else:
-                if not isPositive:
-                    rlen =  (dt.datetime.now() - infected_search['infdate']).days
-                    RecoveredHandler.RecoveredHandler.add_recovered(search['cid'], rlen , infname)
-
-                return search['cid']
 
     @staticmethod
     def update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, email ,ishp):
@@ -47,7 +36,7 @@ class CitizenHandler:
             return -1
 
         cursor = CitizenDAO.CitizenDAO
-        cursor.update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp)
+        cursor.update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, email,  ishp)
 
         return search['cid']
 

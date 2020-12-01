@@ -109,8 +109,8 @@ class RecoveredDAO:
         db.session.commit()
 
     @staticmethod
-    def find_recovered(id):
-        result = db.session.query(Recovered).filter(Recovered.cid == id).first()
+    def find_recovered(cid, illness):
+        result = db.session.query(Recovered).filter(Recovered.cid == cid).filter(Recovered.rillness == illness).first()
         if result is not None:
             ret = {'cid':result.cid}
             return ret

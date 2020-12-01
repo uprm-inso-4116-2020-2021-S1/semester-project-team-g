@@ -1,11 +1,11 @@
 import datetime
 from datetime import datetime as dt
 import re
- 
+
 class FormValidation:
-    def validate_all_functions(self, data):
+    def validate_all_functions(self, data = None):
         self.data = data
-        functions = [func for func in dir(FormValidation) if callable(getattr(FormValidation, func)) and func.startswith("validate") and func != "validate_all_functions"]
+        functions = [func for func in dir(FormValidation) if callable(getattr(FormValidation, func)) and func.startswith("validate") and func != "validate_all_functions" and func != "validate_test" and func != "validate_citizen" ]
         error_messages = {}
         for func in functions:
             field_name = func.split("validate_")[1]
@@ -15,9 +15,9 @@ class FormValidation:
 
         return error_messages
 
-    def validate_citizen(self, data):
+    def validate_citizen(self, data = None):
         self.data = data
-        functions = [func for func in dir(FormValidation) if callable(getattr(FormValidation, func)) and func.startswith("validate") and func != "validate_all_functions" and func != "validate_illness" and func != "validate_institution" and func != "validate_is_positive" ]
+        functions = [func for func in dir(FormValidation) if callable(getattr(FormValidation, func)) and func.startswith("validate") and func != "validate_all_functions" and func != "validate_illness" and func != "validate_institution" and func != "validate_is_positive" and func != "validate_test"]
         error_messages = {}
         for func in functions:
             field_name = func.split("validate_")[1]
@@ -28,6 +28,18 @@ class FormValidation:
 
             return error_messages
 
+    def validate_test(self, data = None):
+        self.data = data
+        functions = [func for func in dir(FormValidation) if callable(getattr(FormValidation, func)) and func.startswith("validate") and func != "validate_citizen" and func !="validate_all_functions" and func != "validate_first_name" and func != "validate_last_name" and func != "validate_institution" and func != "validate_date_of_birth" and func != "validate_sex" and func != "validate_phone" and func != "validate_address" and func != "validate_email"]
+        error_messages = {}
+        for func in functions:
+            field_name = func.split("validate_")[1]
+            result = eval("self." + func + "()")
+
+            if result != None:
+                error_messages[field_name] = result
+
+            return error_messages
 
 
     def validate_first_name(self, data=None):
@@ -163,7 +175,11 @@ class FormValidation:
 
 
 
-# fv = FormValidation()
+
+
+
+
+# fv
 # print( fv.validate_date_of_birth({"date_of_birth":"12/1/2020"}) )
 # print( fv.validate_date_of_birth({"date_of_birth":"13/1/2020"}) )
 # print( fv.validate_address({"address":"Mayaguez"}) )
@@ -186,5 +202,13 @@ class FormValidation:
 #       "ishp": "alive",
 #       "email":"tupapito@gmail.com"
 #     }
-# result = ( FormValidation().validate_citizen(patientData) )
+#
+# test = {
+# 'ssn':'1234567789',
+# 'illness':'CTPG',
+# 'institution' :'UPR',
+# 'is_positive':'Positive'
+#
+# # }
+# result = ( FormValidation().validate_test(test) )
 # print(result)

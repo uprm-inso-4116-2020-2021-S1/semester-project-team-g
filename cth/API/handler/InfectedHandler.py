@@ -53,7 +53,7 @@ class InfectedHandler:
     def add_infected(cid, count, checkup, infname):
         InfectedDAO.InfectedDAO.add_infected(cid, count, checkup, infname)
 
-        search = RecoveredDAO.RecoveredDAO.find_recovered(cid)
+        search = RecoveredDAO.RecoveredDAO.find_recovered(cid,infname)
 
         if search:
             RecoveredDAO.RecoveredDAO.delete_recovered(cid, infname)

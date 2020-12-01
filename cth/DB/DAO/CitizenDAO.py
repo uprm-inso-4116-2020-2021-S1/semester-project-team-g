@@ -19,19 +19,27 @@ class CitizenDAO:
         return jsonify(Citizen = ret)
 
     @staticmethod
-    def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, ishp):
+    def add_citizen(firstname, lastname, DOB, sex, address, phone, ssn, email,  ishp):
 
 
-        new_citizen = Citizen(cfirstname=firstname, clastname=lastname, cdob=DOB, cgender=sex, caddress=address,
+        new_citizen = Citizen(cfirstname=firstname, clastname=lastname, cdob=DOB, cgender=sex, caddress=address,cemail = email,
                               cphone=phone, cssn=ssn, ishp=ishp)
         db.session.add(new_citizen)
         db.session.commit()
+
         return new_citizen.cid
 
     @staticmethod
     def update_citizen(firstname, lastname, DOB, sex, address, phone, ssn, email , ishp):
-        db.session.update(Citizen).where(Citizen.cssn==ssn).values(cfirstname=firstname, clastname=lastname, cdob=DOB, cgender=sex, caddress=address,
-                              cphone=phone, cssn=ssn, cemail = email , ishp=ishp)
+        citizen = db.session.query(Citizen).filter(Citizen.cssn==ssn).first()
+        citizen.cfirstname = firstname
+        citizen.clastname = lastname
+        citizen.cdob = DOB
+        citizen.cgender = sex
+        citizen.caddress = address
+        citizen.cphone = phone
+        citizen.cssn = ssn
+        citizen.ishp = ishp
         db.session.commit()
 
     @staticmethod

@@ -16,6 +16,8 @@ from cth.API.routes import cth_routes
 app.add_url_rule('/operator-login', view_func=cth_routes.operator_login, methods=['POST'])
 app.add_url_rule('/input-form', view_func=cth_routes.input_form, methods=['GET', 'POST'])
 app.add_url_rule('/update-form', view_func = cth_routes.update_citizen, methods= ['GET','PUT'])
+app.add_url_rule('/add-test', view_func = cth_routes.add_test, methods= ['GET','POST'])
+
 
 # Infected Routes
 app.add_url_rule('/infected/results-global', view_func=cth_routes.get_global_results, methods=['GET'])
