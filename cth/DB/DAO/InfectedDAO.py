@@ -2,6 +2,8 @@ from cth import db
 from cth.models import Infected
 from cth.models import Citizen
 from flask import jsonify
+from datetime import datetime as dt
+import datetime
 
 
 class InfectedDAO:
