@@ -9,6 +9,7 @@ class TestDAO:
         new_test = Test(tillness=tillness, tispositive=tispositive, instname=instname, cid=cid, oid=oid)
         db.session.add(new_test)
         db.session.commit()
+        return new_test.tid
 
     @staticmethod
     def update_test(tid, tillness,tispositive,instname, cid,oid):

@@ -81,18 +81,41 @@ def input_form():
     fv = FormValidation()
     result = fv.validate_all_functions(form)
     if len(result) == 0:
-        cid = CitizenHandler.CitizenHandler.add_case(form['firstname'], form['lastname'], form['date_of_birth'],
-                                                        form['sex'], form['address'], form['phone'], form['ssn'],#, form['email'],
-                                                        form['ishp'], form['is_positive'], form['illness']
-                                                        )
-        tid = TestHandler.TestHandler.add_test(form['illness'], form['is_positive'],
-                                               form['institution_name'], cid, form['oid']
-                                               )
+        cid = CitizenHandler.CitizenHandler.add_citizen(form['firstname'], form['lastname'], form['date_of_birth'],
+                                                        form['sex'], form['address'], form['phone'], form['ssn'], form['email'],
+                                                        form['ishp'])
 
-        return make_response(jsonify({"message": "Submission was successful"}), 200)
+        if cid:
+            tid = TestHandler.TestHandler.add_test(form['illness'], form['is_positive'],form['institution_name'], cid, form['oid'])
+            InfectedHandler.InfectedHandler.add_infected(cid,1,'14',form['illness'])
+            return make_response(jsonify({"message": "Submission was successful"}), 200)
+
+
     else:
         payload = make_response(jsonify(result), 400)
         return payload
+
+
+
+def add_test():
+    form = request.json
+    fv = FormValidation()
+
+    result = fv.validate_test(form)
+
+    if len(result) == 0:
+        tid = TestHandler.TestHandler.add_new_test(form['illness'],form['is_positive'],form['institution_name'],form['oid'],form['ssn'])
+        if tid != 1:
+             return make_response(tid,400)
+
+        else:
+            return make_response(jsonify({"message": "Submission was successful"}), 200)
+    else:
+        return make_response(jsonify(result), 400)
+
+
+
+
 
 def update_citizen():
 

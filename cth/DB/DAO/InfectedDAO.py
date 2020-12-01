@@ -2,8 +2,7 @@ from cth import db
 from cth.models import Infected
 from cth.models import Citizen
 from flask import jsonify
-from datetime import datetime as dt
-import datetime
+
 
 class InfectedDAO:
 
@@ -110,8 +109,8 @@ class InfectedDAO:
         db.session.commit()
 
     @staticmethod
-    def find_infected(cid):
-        result = db.session.query(Infected).filter(Infected.cid == cid).first()
+    def find_infected(cid, illness):
+        result = db.session.query(Infected).filter(Infected.cid == cid).filter(Infected.infname == illness).first()
 
         if result is not None:
             ret = {'cid':result.cid, 'infcount':result.infcount, 'infcheckup':result.infcheckup , 'infdate':result.infdate, 'infname':result.infname}
